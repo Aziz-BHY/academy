@@ -21,4 +21,4 @@ Program:
 
   - Certified Creometrists who have a promising e-business idea might qualify for the incubator program without any further process.
  
-  - Community members may vote on an e-business/idea from the community incubator board (the Vessel) for admission into the incubator.
+  
