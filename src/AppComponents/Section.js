@@ -17,7 +17,7 @@ class Section extends Component {
     render() { 
         return ( 
             <div className="mt-3 mb-3 form-style ">
-                <input type="text" className="mb-2" placeholder="Section Title"
+                <input type="text" className="mb-2" value={this.props.Title} placeholder="Section Title"
                 onChange={
                     (e)=>this.props.ChangeTitle(e.target.value, this.props.index)}
                 />

@@ -2,14 +2,26 @@ import React, { Component } from 'react';
 import Progress from './Progress'
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import Rating from '@material-ui/lab/Rating';
+import { withStyles } from '@material-ui/core/styles';
+
+const StyledRating = withStyles({
+    iconFilled: {
+      color: '#4ab6dd',
+    },
+    iconHover: {
+      color: '#1692bf',
+    },
+  })(Rating);
 
 class CourseDetails extends Component {
     constructor(props){
         super(props);
         this.state = {
-            
-            course : {sections:[]}
-           
+            course : {sections:[]},
+            sectionsList : [],
+            getrate:3,
+            setrate:0,
         }
         
     }
@@ -18,7 +30,8 @@ class CourseDetails extends Component {
             res => {
                 console.log(res.data.course)
                 this.setState({
-                course : res.data.course
+                course : res.data.course,
+                sectionsList : res.data.course.sections
                 
             })
             }
@@ -41,7 +54,7 @@ class CourseDetails extends Component {
 
                         <div className="row">
                             <div className="col-lg-8">
-                                <img src="https://cdn.pixabay.com/photo/2017/09/05/10/19/business-2717063__480.jpg" className="img-fluid" alt=""/>
+                                <img src={this.state.course.image} className="img-fluid" alt=""/>
                                 <h3 className="mb-3" >What i'm gonna learn</h3>
                                 <p>
                                     {this.state.course.description}
@@ -52,7 +65,7 @@ class CourseDetails extends Component {
 
                                 <div className="course-info d-flex justify-content-between align-items-center">
                                 <h5><i className="far fa-money-bill-alt inblue icon-mr"></i> Course fee</h5>
-                                <p className="inblue">00 TND</p>
+                                <p className="inblue">{this.state.course.price}</p>
                                 </div>
                                 
                                 <div className="course-info d-flex justify-content-between align-items-center">
@@ -77,7 +90,7 @@ class CourseDetails extends Component {
 
                                 <div className="course-info d-flex justify-content-between align-items-center">
                                 <h5><i className="fas fa-tasks inblue icon-mr"></i> Sections</h5>
-                                <p className="inblue">4</p>
+                                <p className="inblue">{this.state.course.sections.length}</p>
                                 </div>
 
                                 <div className="course-info d-flex justify-content-between align-items-center">
@@ -91,7 +104,7 @@ class CourseDetails extends Component {
                         </div>
                             <h3>Course Sections</h3>
                             <div className="single-section">
-                                {this.state.course.sections.map((e, index)=>
+                                {this.state.sectionsList.map((e, index)=>
                                 <div className="row mt-2 mb-2 container">
                                     <div key={index} className="col-xl-4 d-flex align-items-stretch">
                                         
@@ -107,7 +120,7 @@ class CourseDetails extends Component {
                                     </div>
                                     <div className="col-xl-4 d-flex align-items-stretch">
                                         <button className="btn-get-started mt-1">
-                                            <Link to="/SectionDetails" className="Linky"> View details</Link> 
+                                            <a href={"/SectionDetails/"+this.state.course._id+"/"+index} className="Linky"> View details</a> 
                                         </button>
 
                                     </div>
@@ -120,12 +133,18 @@ class CourseDetails extends Component {
                             <h3>Reviews</h3>
                             <div className="single-section">
                                 <div>
-                                    <span className="user-name">
+                                    <span className="user-name margin-lt">
                                         Emilia Clarcke
                                     </span>
-                                    <span className="review">
-                                        5 <i className="far fa-star"></i>
+                                    <span className="margin-lt">
+                                        <StyledRating
+                                            value={this.state.getrate}
+                                            onChange={(event, x) => {
+                                                this.setState({getrate : x});
+                                            }}
+                                        />
                                     </span>
+                                    
                                     <p className="comment">
                                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum ut sed, dolorum asperiores perspiciatis provident,
                                         odit maxime doloremque aliquam.
@@ -135,18 +154,14 @@ class CourseDetails extends Component {
 
                             <h3>Submit your own review</h3>
                             <div className="single-section">
-                                <select className="input-star">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-
-                                </select>
-                                <span className="review">
-                                    <i className="far fa-star"></i>
-                                </span>
-                                <br/>
+                                <div className="margin-lt">
+                                    <StyledRating
+                                        value={this.state.setrate}
+                                        onChange={(event, y) => {
+                                            this.setState({setrate : y});
+                                        }}
+                                    />
+                                </div>
                                 <textarea type="text" className="input-comment" placeholder="Type your comment here ..."/>
                                 <br/>
                                 <button className="PrimaryButton" >Submit</button>

@@ -31,6 +31,8 @@ function NewCourse(props) {
     const [Description, setDescription] = useState("")
     const [tags , setTags] = useState([])
 	const [LevelValue, setLevelValue] = useState('Beginner');
+    const [price, setPrice] = useState();
+    const [image, setImage] = useState();
 
     const handleDelete=(i)=> {
        const newTags = tags.filter((tag, index) => index !== i) ;
@@ -78,7 +80,10 @@ function NewCourse(props) {
                 level : LevelValue,
                 description : Description ,
                 teacher : Teacher,
-                tags : tags
+                tags : tags,
+                price : price,
+                image : image,
+                status : "pending"
             }
             console.log(newCourse)
             axios.post('http://localhost:5000/course/add', newCourse).then(res=>{
@@ -120,8 +125,8 @@ function NewCourse(props) {
                                     autofocus={false}
 							delimiters={delimiters} />   
                     
-                    <input type="number"  placeholder="Course Price in TND" required={false}/>
-                    <input type="text"  placeholder="Image banner Link" required={false}/>        
+                    <input type="number"  placeholder="Course Price in TND" onChange={e => setPrice(e.target.value)} required={false}/>
+                    <input type="text"  placeholder="Image banner Link" onChange={e => setImage(e.target.value)} required={false}/>        
                     <div className="text-center">
                         <button onClick={(e)=>{props.changeFatherStates(false,Teacher,Title); handleClick(e)}}   type="submit">Next ➜</button>
                     </div>

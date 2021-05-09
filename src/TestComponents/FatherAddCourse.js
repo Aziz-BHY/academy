@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AddCourse from './AddCourse';
-import AddCourseContent from './AddCourseContent';
+import AddSection from './AddSections';
 
 
 class FatherAddCourse extends Component {
@@ -30,7 +30,7 @@ class FatherAddCourse extends Component {
                 </AddCourse>
 
             </div>)
-            : <div><AddCourseContent teacher={this.state.teacher} title={this.state.title} /> </div>
+            : <div><AddSection teacher={this.state.teacher} title={this.state.title} /> </div>
         )
     
     

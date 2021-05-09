@@ -8,7 +8,6 @@ class PublishedCourses extends Component {
         this.state={
             CoursesList : []
         }
-        this.click = this.click.bind(this)
     }
     componentDidMount(){
         
@@ -17,11 +16,15 @@ class PublishedCourses extends Component {
         )    
         console.log(this.state.CoursesList)
     }
-    click(){
+    refresh(){
+        axios.get("http://localhost:5000/course/publishedCourses").then(
+            res => this.setState({CoursesList : res.data})
+        )    
         console.log(this.state.CoursesList)
     }
     render() { 
         return ( <div>
+            <button onClick= {this.refresh.bind(this) } className="PrimaryButton"><i className="fas fa-sync-alt"></i></button>
             <table className="table table-striped">
             <thead>
                 <tr>
@@ -35,27 +38,24 @@ class PublishedCourses extends Component {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                <th scope="row">1</th>
-                <td scope="col">Learn HTML5</td>
-                <td scope="col">Active</td>
-                <td scope="col">25</td>
-                <td scope="col"><Link to="/ViewPublishedCourse"><i className="far fa-eye Link-inblue"/></Link> </td>
-                <td scope="col"><i className="far fa-edit inblue"/></td>
-                <td scope="col"><i className="far fa-trash-alt inblue"/></td>
-                </tr>
-                <tr>
-                <th scope="row">2</th>
-                <td scope="col">Learn CSS3 from 0</td>
-                <td scope="col">Pending</td>
-                <td scope="col">0</td>
-                <td scope="col"><Link to="/ViewPublishedCourse"><i className="far fa-eye Link-inblue"/></Link></td>
-                <td scope="col"><i className="far fa-edit inblue"/></td>
-                <td scope="col"><i className="far fa-trash-alt inblue"/></td>
-                </tr>
+                {
+                    this.state.CoursesList.map((e, i)=>
+                    
+                        <tr key={i} >
+                        <th scope="row">{i+1} </th>
+                        <td scope="col">{e.title} </td>
+                        <td scope="col">{e.status} </td>
+                        <td scope="col">0</td>
+                        <td scope="col"><Link to={"/ViewPublishedCourse/"+e._id} ><i className="far fa-eye Link-inblue"/></Link> </td>
+                        <td scope="col"><Link to={"/EditPublishedCourse/"+e._id} ><i className="far fa-edit Link-inblue"/></Link> </td>
+                        <td scope="col"><i className="far fa-trash-alt Link-inblue"/></td>
+                        </tr>
+                    )
+                }
+
+                
             </tbody>
             </table>
-            <button onClick={this.click} >warini</button>
         </div> );
     }
 }

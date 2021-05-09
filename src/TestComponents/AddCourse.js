@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import Tags from './Tags.component';
-import ReactDOM from 'react-dom';
 import { WithContext as ReactTags } from 'react-tag-input';
-import ForTesting from './ForTesting';
 import {Link} from 'react-router-dom';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import ReactDOM from 'react-dom';
+
 
 const KeyCodes = {
 	comma: 188,
@@ -27,20 +27,20 @@ class AddCourse extends Component {
 			description : "",
 			tags : [],
 
-			suggestions: [
+			/*suggestions: [
                 {text: 'Web' },
                 {text: 'Cloud' },
                 {text: 'React' },
                 {text: 'Kubernetes' },
                 {text: 'GoLang' },
                 {text: 'DevOps' }
-             ]
+            ]*/
 		}
 		this.handleClick = this.handleClick.bind(this);
 
 		this.handleDelete = this.handleDelete.bind(this);
         this.handleAddition = this.handleAddition.bind(this);
-        this.handleDrag = this.handleDrag.bind(this);
+        
 	}
 
 	handleClick (event) {
@@ -74,16 +74,7 @@ class AddCourse extends Component {
 		
     }
 
-    handleDrag(tag, currPos, newPos) {
-        const tags = [...this.state.tags];
-        const newTags = tags.slice();
-
-        newTags.splice(currPos, 1);
-        newTags.splice(newPos, 0, tag);
-
-        // re-render
-        this.setState({ tags: newTags });
-    }
+    
 
 
     render() { 
@@ -137,11 +128,12 @@ class AddCourse extends Component {
 
 								<label >Course Tags</label>
 								<ReactTags tags={tags}
-									suggestions={suggestions}
+									//suggestions={suggestions}
 									handleDelete={this.handleDelete}
 									handleAddition={this.handleAddition}
-									handleDrag={this.handleDrag}
+									
 									delimiters={delimiters} />
+								
 								
 								<button onClick={(e)=>{this.props.changeFatherStates(false,this.state.teacher,this.state.title); this.handleClick(e)}}  className="mt-4">
 									

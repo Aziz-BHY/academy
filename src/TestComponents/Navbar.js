@@ -8,29 +8,29 @@ class Navbar extends Component {
             <div className="container-fluid">
                 <nav className="navbar navbar-light bg-light mt-4 mb-4">
 
-                    <a className="navbar-brand">
-                        <Link to="/">
+                    <span className="navbar-brand">
+                        <Link to="/" className="Linky">
                             Academy
                         </Link>
-                    </a>
+                    </span>
 
                    
                     
                     <button className="btn btn-sm btn-outline-secondary">
-                        <Link to="/addCourse">
+                        <Link to="/addCourse" className="Linky">
                             Add a course
                         </Link>
                     </button>
 
                     <button className="btn btn-sm btn-outline-secondary">
-                        <Link to="/listCourse">
+                        <Link to="/listCourse" className="Linky">
                             List of Courses
                         </Link>
                     </button>
 
                     <button className="btn btn-sm btn-outline-secondary">
-                        <Link to="/showContentCourse">
-                            Show course content 
+                        <Link to="/testing" className="Linky">
+                            Testing 
                         </Link>
                     </button>
 

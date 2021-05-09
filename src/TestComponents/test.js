@@ -23,12 +23,12 @@ class Test extends Component {
     }
 
     HtmlConverter (){
-        this.ReadMD();
+        
         console.log(this.state.MDtext)
         var showdown  = require('showdown'),
         converter = new showdown.Converter(),
         outputHtml = converter.makeHtml(this.state.MDtext);
-
+        console.log(outputHtml)
         return { __html: outputHtml };
     }
     render() { 

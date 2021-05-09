@@ -7,6 +7,7 @@
   text-decoration: none;
   color: inherit;
   margin: 0px;
+  cursor: pointer;
 }
 .Linky:hover {
   text-decoration: none;
@@ -382,4 +383,7 @@ pre {
 .edit-button i,
 .delete-button i {
   margin-right: 10px;
+}
+.margin-lt {
+  margin-left: 20px;
 }

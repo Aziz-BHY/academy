@@ -1,13 +1,12 @@
 import axios from 'axios';
-import React, { Component } from 'react';
-import {useEffect, useState} from 'react';
-import FormLabel from '@material-ui/core/FormLabel';
+import React from 'react';
+import {useState, useEffect} from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import {Link} from 'react-router-dom';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles} from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 
 function CoursesList(props) {
@@ -25,7 +24,7 @@ function CoursesList(props) {
         Intermediate: false,
         Advanced: false,
     });
-    const [value, setValue] = useState([20, 60]); 
+    const [value, setValue] = useState([0, 100]); 
 
     //  Styling des elements de material-ui
     
@@ -71,7 +70,27 @@ function CoursesList(props) {
       })(Slider);
       
     //les fonctions 
+    const getCourses = ()=>{
+        let x = "";
+        if(searchTerm){
+            x="searchTerm="+searchTerm ;
+        }
 
+        axios.get("http://localhost:5000/course/searchCourse?"+x+"&check="
+        +JSON.stringify(CategoryCheck)+"&price="+JSON.stringify(value)+"&level="+JSON.stringify(LevelCheck) ).then(
+            res => setCourses(res.data)
+        )
+    }
+    /*useEffect(()=>{
+        let x = "";
+        if(searchTerm){
+            x="searchTerm="+searchTerm ;
+        }
+
+        axios.get("http://localhost:5000/course/courses?"+x+"&check="+JSON.stringify(CategoryCheck) ).then(
+            res => setCourses(res.data)
+        )
+    })*/
     const handleChangeCategory = (event) => {
         console.log(event.target.name, event.target.checked)
 
@@ -94,21 +113,11 @@ function CoursesList(props) {
 
       
     };
-    const getCourses = ()=>{
-        let x = "";
-        if(searchTerm){
-            x="searchTerm="+searchTerm ;
-        }
-
-        axios.get("http://localhost:5000/course/courses?"+x+"&check="+JSON.stringify(CategoryCheck) ).then(
-            res => setCourses(res.data)
-        )
-    }
+    
     const handleSearch = (event) => {
         setSearchTerm(event.currentTarget.value) ;
- 
-        
-     }
+  
+    }
 
     const { web, cloud, programming } = CategoryCheck;
     const { Beginner, Intermediate, Advanced } = LevelCheck;
@@ -129,7 +138,7 @@ function CoursesList(props) {
                 
                 <div className="row mt-5">
 
-                    <div className="col-lg-4 ">
+                    <div className="col-lg-4 ml-5">
                         
                         <FormControl component="fieldset">
                             <h3>Filter by category</h3>
@@ -199,7 +208,7 @@ function CoursesList(props) {
                                         <div className="course-content">
                                             <div className="d-flex justify-content-between align-items-center mb-3">
                                             <h4>{elem.category} </h4>
-                                            <p className="price">00 TND</p>
+                                            <p className="price">{elem.price} TND</p>
                                             </div>
 
                                             <h3><Link to={"/CourseDetails/" +elem._id} >{elem.title} </Link></h3>

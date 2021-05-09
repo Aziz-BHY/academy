@@ -1,31 +1,73 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withStyles} from '@material-ui/core/styles';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { WithContext as ReactTags } from 'react-tag-input';
 import Section from './Section';
+import axios from 'axios';
+import Markdown from 'markdown-to-jsx';
 
 const KeyCodes = {
 	comma: 188,
 	enter: 13,
 };
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
-const suggestions = [
-    {text: 'Web' },
-    {text: 'Cloud' },
-    {text: 'React' },
-    {text: 'Kubernetes' },
-    {text: 'GoLang' },
-    {text: 'DevOps' }
-]
+
+
 function EditCourse(props) {
-    const [tags , setTags] = useState(["oldtag"])
-	const [sections, setSections ] = useState([{title: "Section initial", 
-    content:`<h1> This is an old section </h1>
-    <p> perhaps perhaps perhaps </p>` }])
+    const BlueRadio = withStyles({
+        root: {
+          color: "#1692bf",
+          '&$checked': {
+            color: "#1692bf",
+          },
+        },
+        checked: {},
+    })((props) => <Radio color="default" {...props} />);
+    
+    const [id, setID] = useState("")
+    const [Title, setTitle] = useState("")
+    const [Teacher, setTeacher] = useState("")
+    const [Category, setCategory] = useState("")
+    const [Language, setLanguage] = useState("")
+    const [Description, setDescription] = useState("")
+	const [LevelValue, setLevelValue] = useState('Beginner');
+    const [Price, setPrice] = useState();
+    const [Image, setImage] = useState();
+    const [tags , setTags] = useState([])
+    const [sectionTitle, setSectionTitle] = useState([])
+	const [sections, setSections ] = useState([{title:"",content:""}])
+    const [course, setCourse] = useState({sections:[]})
+
+    const getDetails= () => {
+       console.log(props)
+        axios.get("http://localhost:5000/course/CourseDetail?id="+props.match.params.idCourse ).then(
+        res => {
+                  
+          setID(props.match.params.idCourse)
+          setTitle(res.data.course.title)
+          setTeacher(res.data.course.teacher)
+          setCategory(res.data.course.category) 
+          setLanguage(res.data.course.language)
+          setLevelValue(res.data.course.level)
+          setDescription(res.data.course.description)
+          setTags(res.data.course.tags)
+          setPrice(res.data.course.price)
+          setImage(res.data.course.image)
+          setLevelValue(res.data.course.level)
+          setSectionTitle(res.data.sections)
+        
+        })
+        axios.get("http://localhost:5000/course/SectionDetails?id="+props.match.params.idCourse ).then(
+            res => {
+                setSections(res.data.sections)
+            }
+        )
+    };
+    
 
     const handleDelete=(i)=> {
        const newTags = tags.filter((tag, index) => index !== i) ;
@@ -46,22 +88,13 @@ function EditCourse(props) {
         // re-render
         setTags( newTags );
     }
-        const [value, setValue] = useState('Beginner');
         
         const handleChangeLevel = (event) => {
-            setValue(event.target.value);
-            console.log(value)
+            setLevelValue(event.target.value);
+            console.log(LevelValue)
         };
         
-        const BlueRadio = withStyles({
-            root: {
-              color: "#1692bf",
-              '&$checked': {
-                color: "#1692bf",
-              },
-            },
-            checked: {},
-        })((props) => <Radio color="default" {...props} />);
+        
         
         const addNewSection =()=>{
             setSections(
@@ -93,6 +126,7 @@ function EditCourse(props) {
                 converter = new showdown.Converter();
     
                 sections.map((e, index)=> {
+                    
                     e.content = converter.makeMarkdown(e.content)
                 })
                 console.log(sections)
@@ -107,6 +141,28 @@ function EditCourse(props) {
                 })
                 */
         }
+        const SaveEdits=()=>{
+            const CourseModified = {
+                _id : id,
+                title : Title ,
+                teacher: Teacher ,
+                category: Category ,
+                language : Language ,
+                level : LevelValue,
+                description : Description ,
+                tags : tags,
+                image : Image,
+                price : Price,
+                sections : sectionTitle
+            }
+              
+            axios.post("http://localhost:5000/course/modifyContent" ,{
+                course : CourseModified,
+                id : id,
+                }).then(
+                res=> console.log("course very well modified !!! ")
+            )
+        }
         return ( 
             <div>
                 <div className="breadcrumbs" data-aos="fade-in">
@@ -114,18 +170,23 @@ function EditCourse(props) {
                         <h2>Edit your course</h2>
                     </div>
                 </div>
+                <button className="PrimaryButton" onClick={getDetails} >Refresh</button>
                 <form className="form-style container-md mb- mt-5">
-                    <input type="text"  placeholder="Course Title" required="false" value="Old value" />
-                    <textarea placeholder="Course Description"value="Old value"></textarea>
+                    <input type="text"  placeholder="Course Title" required="false" value={Title} />
+                    <textarea placeholder="Course Description"value={Description}></textarea>
                     <h6>Course Level</h6>
                     <FormControl component="fieldset" className="mb-4">
-                        <RadioGroup row aria-label="gender"  value={value} onChange={handleChangeLevel}>
+                        <RadioGroup row aria-label="gender"  value={LevelValue} onChange={handleChangeLevel}>
                             <FormControlLabel value="Beginner" control={<BlueRadio />} label="Beginner" />
                             <FormControlLabel value="Intermediate" control={<BlueRadio />} label="Intermediate" />
                             <FormControlLabel value="Advanced" control={<BlueRadio />} label="Advanced" />
                         </RadioGroup>
                     </FormControl>
-                    <input type="text"  placeholder="Course Language" value="Old value" required ="false"/>
+
+                    <input type="text"  placeholder="Course Language" value={Language} required ="false"/>
+                    <input type="text"  placeholder="Course Category" value={Category} onChange={e => setCategory(e.target.value)} required={false}/>
+                    <input type="text"  placeholder="Course Teacher" value={Teacher} onChange={e => setTeacher(e.target.value)} required={false}/>
+
                     <ReactTags tags={tags}
 									//suggestions={suggestions}
 									handleDelete={handleDelete}
@@ -134,23 +195,30 @@ function EditCourse(props) {
 									placeholder="Course key words ..."
                                     autofocus={false}
 							delimiters={delimiters} />                    
-                    <input type="number"  placeholder="Course Price in TND" value="1000" required ="false"/>
-                    <input type="text"  placeholder="Image banner Link" value="Old value" required ="false"/>        
+                    <input type="number"  placeholder="Course Price in TND" value={Price} required ="false"/>
+                    <input type="text"  placeholder="Image banner Link" value={Image} required ="false"/>        
                 </form>
 
-                <div className="container-sm top-space mb-4">
+            <div className="container-sm top-space mb-4">
                 <button className="btn-outlined-sm mb-4" onClick={addNewSection} >Add a section </button>
                 <br/>
                 {sections.map((c, index)=>
                     <div className="mb-5">
                         <h5>Section {index+1} </h5>
-                        <Section key={index} ChangeTitle={ChangeTitle} ChangeContent={ChangeContent} Contenu={c.content} index={index} /> 
+                        <Section 
+                            key={index} 
+                            ChangeTitle={ChangeTitle} 
+                            ChangeContent={ChangeContent} 
+                            Contenu={c.content}
+                            Title={c.title} 
+                            index={index} 
+                        /> 
                         <i className="far fa-trash-alt red-icon"/>
                         
                     </div>
                 )} 
                  
-                <button className="PrimaryButton mt-3 mb-4" onClick={SaveText} >Submit</button>
+                <button className="PrimaryButton mt-3 mb-4" onClick={SaveEdits} >Submit</button>
                 <br/>
             </div>
 

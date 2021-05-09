@@ -44,16 +44,13 @@ class AcademyApp extends Component {
                     <Route path="/NewCourse" >
                         <FatherAddCourse />
                     </Route>
-                    <Route path="/SectionDetails" >
-                        <SectionDetails />
+                    <Route path="/SectionDetails/:idCourse/:index" component={SectionDetails} >
                     </Route>
 
-                    <Route path="/ViewPublishedCourse" >
-                        
-                        <ViewPublishedCourse />
+                    <Route path="/ViewPublishedCourse/:idCourse" component={ViewPublishedCourse} >
                     </Route>
-                    <Route path ="/EditCourse">
-                        <EditCourse />
+                    
+                    <Route path ="/EditPublishedCourse/:idCourse" component={EditCourse} >
                     </Route>
                 </Router>
                 

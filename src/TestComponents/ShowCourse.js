@@ -46,6 +46,12 @@ function ShowCourse(props) {
        
     };
     
+    const deleteCourse = (id) =>{
+        
+        axios.post("http://localhost:5000/course/deleteCourse" , {id : id}).then
+        (res => getCourses())
+    }
+
     const { web, cloud, programming } = checking;
     
     return ( 
@@ -54,18 +60,18 @@ function ShowCourse(props) {
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Choose a category</FormLabel>
                     <FormGroup>
-                    <FormControlLabel
-                        control={<Checkbox checked={web} onChange={handleChange}  name="web" />}
-                        label="Web development"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox checked={cloud} onChange={handleChange} name="cloud"  />}
-                        label="Cloud"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox checked={programming} onChange={handleChange} name="programming"  />}
-                        label="Programming"
-                    />
+                        <FormControlLabel
+                            control={<Checkbox checked={web} onChange={handleChange}  name="web" />}
+                            label="Web development"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={cloud} onChange={handleChange} name="cloud"  />}
+                            label="Cloud"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={programming} onChange={handleChange} name="programming"  />}
+                            label="Programming"
+                        />
                     </FormGroup>
                     
                 </FormControl>
@@ -78,6 +84,7 @@ function ShowCourse(props) {
                 <div className="d-grid gap-2 mt-4">
                     <button className="btn btn-outline-success btn-lg mb-3" onClick={getCourses}>Show  courses </button>
                 </div>
+                
                 <div>
                             <table className="table">
                                 <thead>
@@ -88,30 +95,37 @@ function ShowCourse(props) {
                                     <th scope="col">Description</th>
                                     <th scope="col">Tags</th>
                                     <th scope="col">Category</th>
+                                    <th>Details</th>
+                                    <th>Modify</th>
+                                    <th>Delete</th>
                                     </tr>
                                 </thead>
 
                 {
                     courses.map((elem, index) =>
                         
-                            <tbody>
+                            <tbody key={index} >
                                 
-                                
-                                    <tr /* onClick={(e)=>{props.changeFatherStates(false,courses,elem.teacher,elem.title)}} */ >
-                                    <th scope="row"><Link to={"/CourseDetails/" +elem._id} >{index +1 }</Link></th>
-                                    <td><Link to={"/CourseDetails/" +elem._id} >{elem.title }</Link></td>
-                                    <td><Link to={"/CourseDetails/" +elem._id} >{elem.teacher} </Link></td>
-                                    <td><Link to={"/CourseDetails/" +elem._id} >{elem.description} </Link></td>
-                                    <td><Link to={"/CourseDetails/" +elem._id} >
+                                    <tr >
+                                    <th scope="row">{index +1 }</th>
+                                    <td>{elem.title }</td>
+                                    <td>{elem.teacher} </td>
+                                    <td>{elem.description} </td>
+                                    <td>
                                     {
-                                        elem.tags.map(t =>
-                                            <div>
+                                        elem.tags.map((t , i)=>
+                                            <div key={index+500+i}>
                                                 <p>{t.text}, </p>
                                             </div>
                                             )
                                     }
-                                    </Link></td>
-                                    <td><Link to={"/CourseDetails/" +elem._id} >{elem.category}</Link> </td>
+                                    </td>
+                                    <td>{elem.category} </td>
+                                    
+                                    <td><button className="btn btn-light"><Link className="Linky" to={"/CourseDetails/" +elem._id}><i className="fa fa-eye"/></Link></button> </td>
+                                    <td><button className="btn btn-light"><Link  to={"/ModifyContent/" +elem._id} ><i className="fa fa-edit"/></Link></button></td>
+                                    <td><button className="btn btn-danger" onClick={()=>deleteCourse(elem._id)} ><i className="fa fa-trash"/></button></td>
+                                    
                                     </tr>
                                 
                             </tbody>
@@ -119,10 +133,10 @@ function ShowCourse(props) {
                     )
                 }
                 </table>
-                            
+                
                             </div>
             </div>
-         );
+        );
     
 }
  

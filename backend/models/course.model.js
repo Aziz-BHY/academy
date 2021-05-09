@@ -10,6 +10,11 @@ const courseSchema = new schema ({
     description : {type : String , required : true},
     tags : {type : Array , required : true},
     path : { type : String },
+    sections : {type : Array},
+    price : {type : String},
+    image : {type : String},
+    status : {type : String}
+
 
 },
 {
