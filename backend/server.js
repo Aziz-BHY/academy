@@ -11,19 +11,6 @@ app.use(cors());
 app.use(express.json());
 
 
-/*app.route("/").get((req, res)=>{
-    var fs = require('fs');
-    try {
-        const data = fs.readFileSync('./AcademyFiles/hadhemi/uiux/course.md', 'utf8')
-        console.log(data)
-        res.json(data);
-
-      } catch (err) {
-        console.error(err)
-      }
-})
-*/
-
 const uri = process.env.ATLAS_URI ;
 mongoose.connect(uri, {useNewUrlParser : true, useCreateIndex : true});
 const connection = mongoose.connection;
@@ -32,7 +19,8 @@ connection.once("open", ()=>{
 })
 
 const CourseRouter = require('./route/course')
-
+const UserRouter = require('./route/users')
 app.use('/course', CourseRouter)
+app.use('/user', UserRouter)
 
 app.listen(port, ()=> console.log("server is running"))

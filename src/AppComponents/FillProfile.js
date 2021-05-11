@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { WithContext as ReactTags } from 'react-tag-input';
+import axios from 'axios';
 
 const KeyCodes = {
 	comma: 188,
@@ -12,7 +13,6 @@ class FillProfile extends Component {
 		super(props)
 		this.state = {
 			tags : [],
-
 			suggestions: [
                 {text: 'Web' },
                 {text: 'Cloud' },
@@ -20,12 +20,18 @@ class FillProfile extends Component {
                 {text: 'Kubernetes' },
                 {text: 'GoLang' },
                 {text: 'DevOps' }
-            ]
+            ],
+
+            user : JSON.parse(localStorage.getItem('profile')),
+            organisation :"",
+            post :"",
+            name :JSON.parse(localStorage.getItem('profile'))?.result.name
 		}
 		this.handleDelete = this.handleDelete.bind(this);
         this.handleAddition = this.handleAddition.bind(this);
         this.handleDrag = this.handleDrag.bind(this);
-        
+        this.handleSubmit = this.handleSubmit.bind(this);
+
 	}
     handleDelete(i) {
         const { tags } = this.state;
@@ -48,7 +54,18 @@ class FillProfile extends Component {
         // re-render
         this.setState({ tags: newTags });
     }
-
+    handleSubmit(e){
+        e.preventDefault();
+        axios.post("http://localhost:5000/user/fillProfile", {
+                email : this.state.user?.result.email,
+                organisation :this.state.organisation ,
+                intrests : this.state.tags,
+                post : this.state.post,
+                name: this.state.name
+            }).then(res=>{
+                console.log("Profile is filled ;)")
+            })
+    }
     render() { 
         const { tags, suggestions } = this.state;
         return ( 
@@ -68,8 +85,12 @@ class FillProfile extends Component {
                         </div>
                         <div className="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
                         <form className="form-style">
-                            <input type="text"  placeholder="Name" required/>
-                            <input type="number"  placeholder="Phone number" required/>
+                            <input type="email"  placeholder="Email" value={this.state.user?.result.email} disabled/>
+                            <input type="text"  placeholder="Name" 
+                                value={this.state.name} 
+                                onChange={(e)=> this.setState({name :e.target.value}) }
+                                required
+                            />
                             <ReactTags tags={tags}
 									//suggestions={suggestions}
 									handleDelete={this.handleDelete}
@@ -79,11 +100,15 @@ class FillProfile extends Component {
                                     autofocus={false}
 							delimiters={delimiters} />
 
-                            <input type="text"  placeholder="Organisation" />
-                            <input type="text"  placeholder="Post" />
+                            <input type="text"  placeholder="Organisation" 
+                                onChange={(e)=> this.setState({organisation :e.target.value}) }
+                            />
+                            <input type="text"  placeholder="Post" 
+                                onChange={(e)=> this.setState({post :e.target.value}) }
+                            />
                             
                             
-                            <div className="text-center"><button type="submit">Submit</button></div>
+                            <div className="text-center"><button type="submit"  onClick={this.handleSubmit }>Submit</button></div>
                         </form>
                             
 
