@@ -69,7 +69,6 @@ class YourProfileInformations extends Component {
                                     </ul>
                                 </div>
                                 
-                                <button className="btn-outlined-sm mt-4 mr-4">Log out</button>               
 
                             </div>
                         </div>

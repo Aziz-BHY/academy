@@ -18,7 +18,7 @@ class CourseDetails extends Component {
     constructor(props){
         super(props);
         this.state = {
-            course : {sections:[]},
+            course : {sections:[], teacher:{name:"",email:""}},
             sectionsList : [],
             getrate:3,
             setrate:0,
@@ -70,7 +70,7 @@ class CourseDetails extends Component {
                                 
                                 <div className="course-info d-flex justify-content-between align-items-center">
                                 <h5><i className="far fa-user inblue icon-mr"></i> Trainer</h5>
-                                <p className="inblue">{this.state.course.teacher} </p>
+                                <p className="inblue">{this.state.course.teacher.name} </p>
                                 </div>
 
                                 <div className="course-info d-flex justify-content-between align-items-center">

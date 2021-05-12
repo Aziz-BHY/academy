@@ -8,18 +8,18 @@ class FatherAddCourse extends Component {
         super(props)
         this.state ={
             next : true,
-            teacher : "",
-            title : ""
+            id : "",
+            
         }
         this.changeFatherStates = this.changeFatherStates.bind(this)
     }
-    async changeFatherStates(bool, CourseTeacher, CourseTitle){
+    async changeFatherStates(bool, CourseId){
         await this.setState({
             next: bool,
-            teacher : CourseTeacher,
-            title : CourseTitle
+            id : CourseId
         })
         console.log(this.state);
+        console.log("course id" + this.state.id)
     }
     render() { 
         
@@ -30,7 +30,7 @@ class FatherAddCourse extends Component {
                 </NewCourse>
 
             </div>)
-            : <div><AddSection teacher={this.state.teacher} title={this.state.title} /> </div>
+            : <div><AddSection id={this.state.id}  /> </div>
         )
     
     

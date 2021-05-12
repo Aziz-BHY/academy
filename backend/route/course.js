@@ -1,6 +1,6 @@
 const router = require ("express").Router();
-
 let Course = require('../models/course.model')
+let User = require('../models/user.model');
 
 router.route('/add').post((req, res)=>{
   const newCourse = new Course({
@@ -13,13 +13,17 @@ router.route('/add').post((req, res)=>{
     tags : req.body.tags,
     price : req.body.price,
     image : req.body.image,
-    status : req.body.status
-    
+    status : req.body.status,
+    path :'AcademyFiles/'+req.body.teacher.email+'/'+ req.body.title
     
   })
-    newCourse.save().then(()=>res.json("yes"))
+    var idCourse =""
+    newCourse.save(function (err, room){
+      idCourse = room._id
+      res.json({added : "yes", id :idCourse})
+    })
 })
-
+//we use it in case we had one section only ..
 router.route('/addContent').post((req, res) =>{
   
   var fs = require('file-system');
@@ -33,23 +37,28 @@ router.route('/addContent').post((req, res) =>{
           })
   res.json("content added")
 })
+router.route('/addSections').post( async (req, res) =>{
+  var ThePath = "";
 
-router.route('/addSections').post((req, res) =>{
   var sections = req.body.sections ;
-  var path = 'AcademyFiles/'+req.body.teacher+'/'+ req.body.title ;
   var fs = require('file-system');
   var sectionTitle =[];
-
+  console.log("id : -->"+ req.body.id)
+  await Course.findById(req.body.id )
+        .then(elem =>{
+            ThePath = elem.path 
+        })
+  console.log(ThePath)
+  
   sections.map((e,index)=> {
-    var sectionPath = path +'/' + e.title + '.md';
+    var sectionPath = ThePath +'/' + e.title + '.md';
     fs.writeFile(sectionPath , e.content, function(err) {"error error"})
     sectionTitle.push(e.title)
   })
 
-  Course.find({title :req.body.title , teacher:req.body.teacher})
+  Course.find({id :req.body.id })
         .then(courses => 
           {
-            courses[0].path=path
             courses[0].sections = sectionTitle
             courses[0].save()
           })

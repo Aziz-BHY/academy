@@ -7,7 +7,8 @@ const courseSchema = new schema ({
     intrests : {type : Array },
     organisation : {type : String },
     post : {type : String},
-    
+    enrolled :{type : Array},
+    published :{type : Array}
 },
 {
     timesstamps : true 

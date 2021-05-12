@@ -22,6 +22,12 @@ class PublishedCourses extends Component {
         )    
         console.log(this.state.CoursesList)
     }
+    deleteCourse(id){
+        
+        axios.post("http://localhost:5000/course/deleteCourse" , {id : id}).then
+        (res => console.log("ok"))
+        this.refresh();
+    }
     render() { 
         return ( <div>
             <button onClick= {this.refresh.bind(this) } className="PrimaryButton"><i className="fas fa-sync-alt"></i></button>
@@ -48,7 +54,11 @@ class PublishedCourses extends Component {
                         <td scope="col">0</td>
                         <td scope="col"><Link to={"/ViewPublishedCourse/"+e._id} ><i className="far fa-eye Link-inblue"/></Link> </td>
                         <td scope="col"><Link to={"/EditPublishedCourse/"+e._id} ><i className="far fa-edit Link-inblue"/></Link> </td>
-                        <td scope="col"><i className="far fa-trash-alt Link-inblue"/></td>
+                        <td scope="col">
+                            <i className="far fa-trash-alt Link-inblue"
+                                onClick={()=>this.deleteCourse(e._id)}
+                            />
+                        </td>
                         </tr>
                     )
                 }

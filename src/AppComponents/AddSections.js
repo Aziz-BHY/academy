@@ -7,8 +7,9 @@ class AddSection extends Component {
         super(props)
         this.state={
             sections:[],
-            title : this.props.title ,
-            teacher : this.props.teacher 
+            //nrodoih bel id w mbaad nzidou l id fil user published ;) 
+            id : this.props.id ,
+           
         }
 
         this.addNewSection = this.addNewSection.bind(this)
@@ -57,10 +58,11 @@ class AddSection extends Component {
             
             axios.post("http://localhost:5000/course/addSections", {
                 sections: this.state.sections ,
-                title : this.state.title,
-                teacher : this.state.teacher
+                id : this.state.id
+                
             }).then(res=>{
-                console.log("Course content well added !! !")
+                console.log("Course content well added !! for the course with id : "+this.state.id)
+                
             })
             
     }

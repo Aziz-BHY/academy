@@ -3,7 +3,7 @@ const schema = mongoose.Schema ;
 
 const courseSchema = new schema ({
     title : {type : String , required : true},
-    teacher : {type : String , required : true},
+    teacher : {type : Object , required : true},
     category : {type : String , required : true},
     language : {type : String , required : true},
     level : {type : String , required : true},

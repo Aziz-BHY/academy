@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { withStyles} from '@material-ui/core/styles';
 import {useState} from 'react';
 import Radio from '@material-ui/core/Radio';
@@ -23,9 +23,9 @@ const suggestions = [
 ]
 
 function NewCourse(props) {
-
+    const [id, setId] = useState("")
     const [Title, setTitle] = useState("")
-    const [Teacher, setTeacher] = useState("")
+    const [Teacher, setTeacher] = useState({name :"", email :""})
     const [Category, setCategory] = useState("")
     const [Language, setLanguage] = useState("")
     const [Description, setDescription] = useState("")
@@ -33,7 +33,15 @@ function NewCourse(props) {
 	const [LevelValue, setLevelValue] = useState('Beginner');
     const [price, setPrice] = useState();
     const [image, setImage] = useState();
-
+    var leID ="ps";
+    useEffect(()=>{
+        const user = JSON.parse(localStorage.getItem('profile'));
+        axios.post(("http://localhost:5000/user/getUserName"),{
+            email : user?.result.email    
+        }).then(res=>{
+            setTeacher({name : res.data, email: user?.result.email})
+        })
+    })
     const handleDelete=(i)=> {
        const newTags = tags.filter((tag, index) => index !== i) ;
         setTags(newTags);
@@ -70,9 +78,9 @@ function NewCourse(props) {
             checked: {},
         })((props) => <Radio color="default" {...props} />);
         
-        const handleClick = (event) => {
-//            event.preventDefault();
-    
+        const handleClick = async (event) => {
+            
+            event.preventDefault();
             const newCourse = {
                 title : Title ,
                 category: Category ,
@@ -86,10 +94,16 @@ function NewCourse(props) {
                 status : "pending"
             }
             console.log(newCourse)
-            axios.post('http://localhost:5000/course/add', newCourse).then(res=>{
-                if (res.data == "yes") console.log("course created YESSS !!!!!!")
+            await axios.post('http://localhost:5000/course/add', newCourse).then(res=>{
+                if (res.data.added == "yes") {
+                    console.log("course created YESSS !!!!!! with id :" + res.data.id)
+                    setId(res.data.id)
+                    leID = res.data.id
+                }
+                
             })
-            
+            console.log("id in state : "+ id)
+            console.log("id in var : "+ leID)
         }
         return ( 
             <div>
@@ -114,7 +128,6 @@ function NewCourse(props) {
 
                     <input type="text"  placeholder="Course Language" onChange={e => setLanguage(e.target.value)} required={false}/>
                     <input type="text"  placeholder="Course Category" onChange={e => setCategory(e.target.value)} required={false}/>
-                    <input type="text"  placeholder="Course Teacher" onChange={e => setTeacher(e.target.value)} required={false}/>
 
                     <ReactTags tags={tags}
 									//suggestions={suggestions}
@@ -128,7 +141,13 @@ function NewCourse(props) {
                     <input type="number"  placeholder="Course Price in TND" onChange={e => setPrice(e.target.value)} required={false}/>
                     <input type="text"  placeholder="Image banner Link" onChange={e => setImage(e.target.value)} required={false}/>        
                     <div className="text-center">
-                        <button onClick={(e)=>{props.changeFatherStates(false,Teacher,Title); handleClick(e)}}   type="submit">Next ➜</button>
+                        <button 
+                            onClick={async (e)=>{ await handleClick(e); 
+                             props.changeFatherStates(false,leID)}}   
+                            type="submit">
+
+                            Next ➜
+                        </button>
                     </div>
                 </form>
             </div>

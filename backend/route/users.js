@@ -33,6 +33,31 @@ router.route('/fillProfile').post((req, res) =>{
               elem[0].save()
             })
     res.json("content added")
-  })
-  
+})
+router.route('/getProfile').post((req, res) =>{
+  User.findOne({email : req.body.email})
+        .then(elem => 
+          {
+            res.json(elem)
+          })
+})
+router.route('/updateProfile').post((req, res) =>{
+  User.find({email : req.body.email})
+        .then(elem => 
+          {
+            elem[0].name=req.body.profile.name
+            elem[0].organisation=req.body.profile.organisation
+            elem[0].intrests=req.body.profile.intrests
+            elem[0].post=req.body.profile.post
+            elem[0].save()
+          })
+  res.json("content added")
+})
+router.route('/getUserName').post((req,res)=>{
+  User.findOne({email: req.body.email})
+    .then(elem =>
+      res.json(elem.name)
+    )
+})
+
 module.exports = router;
