@@ -2,7 +2,7 @@ const router = require ("express").Router();
 let Course = require('../models/course.model')
 let User = require('../models/user.model');
 
-router.route('/add').post((req, res)=>{
+router.route('/add').post(async(req, res)=>{
   const newCourse = new Course({
     title : req.body.title,
     teacher : req.body.teacher,
@@ -17,12 +17,13 @@ router.route('/add').post((req, res)=>{
     path :'AcademyFiles/'+req.body.teacher.email+'/'+ req.body.title
     
   })
-    var idCourse =""
-    newCourse.save(function (err, room){
+    let idCourse =""
+    await newCourse.save(function (err, room){
       idCourse = room._id
       res.json({added : "yes", id :idCourse})
     })
 })
+
 //we use it in case we had one section only ..
 router.route('/addContent').post((req, res) =>{
   
@@ -37,6 +38,7 @@ router.route('/addContent').post((req, res) =>{
           })
   res.json("content added")
 })
+
 router.route('/addSections').post( async (req, res) =>{
   var ThePath = "";
 
@@ -55,21 +57,35 @@ router.route('/addSections').post( async (req, res) =>{
     fs.writeFile(sectionPath , e.content, function(err) {"error error"})
     sectionTitle.push(e.title)
   })
+  console.log(sectionTitle);
 
-  Course.find({id :req.body.id })
+  await Course.findById(req.body.id)
         .then(courses => 
           {
-            courses[0].sections = sectionTitle
-            courses[0].save()
+            courses.sections = sectionTitle
+            courses.save()
           })
   res.json("content added")
 })
 
-router.route('/publishedCourses').get((req,res)=>{
-  Course.find()
-        .then (x =>
-          res.json(x)
-          )
+router.route('/publishedCourses').post((req,res)=>{
+  var result =[]
+   User.findOne({email : req.body.email})
+    .then(e =>{
+        e.published.map((elem, index) =>{
+          Course.findById(elem)
+          .then(eachCourse =>{
+            result.push(eachCourse)
+            //console.log("each Course :"+ result +" \n ____________________")
+            if (index === e.published.length-1){
+              res.json(result)
+            }
+          })
+          
+        })
+  })
+  
+  
 })
 
 router.route('/searchCourse').get((req, res) =>{
@@ -124,6 +140,7 @@ router.route('/CourseDetail').get((req, res) =>
     }
   )}
 )
+
 router.route('/SectionDetails').get((req, res) =>
   {
     var fs = require('fs');
@@ -153,6 +170,7 @@ router.route('/SectionDetails').get((req, res) =>
   
   )}
 )
+
 router.route('/modifyContent').post((req,res)=>{
   /*var fs = require('fs');
   var SectionDetail =[]

@@ -7,8 +7,8 @@ class ViewPublishedCourse extends Component {
     constructor(props){
         super(props);
         this.state = {
-            
-            course : {sections:[]}
+            sectionsList : [],
+            course : {sections:[], teacher:{name:"",email :""}}
            
         }
         this.deleteCourse = this.deleteCourse.bind(this)
@@ -19,8 +19,8 @@ class ViewPublishedCourse extends Component {
             res => {
                 console.log(res.data.course)
                 this.setState({
-                course : res.data.course
-                
+                course : res.data.course,
+                sectionsList : res.data.course.sections
             })
             }
         )
@@ -69,7 +69,7 @@ class ViewPublishedCourse extends Component {
                                 
                                 <div className="course-info d-flex justify-content-between align-items-center">
                                 <h5><i className="far fa-user inblue icon-mr"></i> Trainer</h5>
-                                <p className="inblue">{this.state.course.teacher} </p>
+                                <p className="inblue">{this.state.course.teacher.name} </p>
                                 </div>
 
                                 <div className="course-info d-flex justify-content-between align-items-center">
@@ -103,7 +103,7 @@ class ViewPublishedCourse extends Component {
                         </div>
                             <h3>Course Sections</h3>
                             <div className="single-section">
-                                {this.state.course.sections.map((e, index)=>
+                                {this.state.sectionsList.map((e, index)=>
                                 <div className="row mt-2 mb-2 container">
                                     <div key={index} className="col-xl-4 d-flex align-items-stretch">
                                         
@@ -119,7 +119,7 @@ class ViewPublishedCourse extends Component {
                                     </div>
                                     <div className="col-xl-4 d-flex align-items-stretch">
                                         <button className="btn-get-started mt-1">
-                                            <Link to="/SectionDetails" className="Linky"> View details</Link> 
+                                            <a href={"/SectionDetails/"+this.state.course._id+"/"+index} className="Linky"> View details</a> 
                                         </button>
 
                                     </div>

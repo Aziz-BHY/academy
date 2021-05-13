@@ -53,6 +53,15 @@ router.route('/updateProfile').post((req, res) =>{
           })
   res.json("content added")
 })
+router.route('/addPublished').post((req, res) =>{
+  User.findOne({email: req.body.email})
+        .then(elem => 
+          {
+            elem.published.push(req.body.id)
+            elem.save()
+          })
+  res.json("yes")
+})
 router.route('/getUserName').post((req,res)=>{
   User.findOne({email: req.body.email})
     .then(elem =>

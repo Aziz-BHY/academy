@@ -2,23 +2,27 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const user = JSON.parse(localStorage.getItem('profile'));
 class PublishedCourses extends Component {
     constructor(props){
         super(props)
         this.state={
-            CoursesList : []
+            CoursesList : [],
+            email : user?.result.email 
         }
     }
     componentDidMount(){
         
-        axios.get("http://localhost:5000/course/publishedCourses").then(
-            res => this.setState({CoursesList : res.data})
+        axios.post("http://localhost:5000/course/publishedCourses", 
+            {email :this.state.email})
+            .then(res => this.setState({CoursesList : res.data})
         )    
         console.log(this.state.CoursesList)
     }
     refresh(){
-        axios.get("http://localhost:5000/course/publishedCourses").then(
-            res => this.setState({CoursesList : res.data})
+        axios.post("http://localhost:5000/course/publishedCourses", 
+            {email :this.state.email})
+            .then(res => this.setState({CoursesList : res.data})
         )    
         console.log(this.state.CoursesList)
     }

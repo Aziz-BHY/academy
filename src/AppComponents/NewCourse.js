@@ -102,8 +102,16 @@ function NewCourse(props) {
                 }
                 
             })
-            console.log("id in state : "+ id)
-            console.log("id in var : "+ leID)
+            await axios.post('http://localhost:5000/user/addPublished', {
+                id :leID,
+                email : Teacher.email
+            } ).then(res=>{
+                if (res.data == "yes") {
+                    console.log("Published with success ;)" )
+                    
+                }
+                
+            })
         }
         return ( 
             <div>
