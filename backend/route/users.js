@@ -69,8 +69,13 @@ router.route('/addEnrolled').post((req, res) =>{
           {
             elem.enrolled.push({id : req.body.id, progress :0})
             elem.save()
+            res.json("yes")
           })
-  res.json("yes")
+  Course.findById(req.body.id).then(elem =>{
+    elem.student=elem.student+1
+    console.log(elem.student)
+    elem.save()
+  })
 })
 router.route('/getUserName').post((req,res)=>{
   User.findOne({email: req.body.email})

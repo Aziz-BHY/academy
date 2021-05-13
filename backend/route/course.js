@@ -14,6 +14,7 @@ router.route('/add').post(async(req, res)=>{
     price : req.body.price,
     image : req.body.image,
     status : req.body.status,
+    student :0,
     path :'AcademyFiles/'+req.body.teacher.email+'/'+ req.body.title
     
   })
