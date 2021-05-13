@@ -122,7 +122,9 @@ function NewCourse(props) {
                 </div>
                 <form className="form-style container-md mb-5">
                     <h2 className="text-center mt-4 mb-4"> First, fill informations of your course</h2>
+                    
                     <input type="text"  placeholder="Course Title" onChange={e => setTitle(e.target.value)} required={false}/>
+                    
                     <textarea placeholder="Course Description" onChange={e => setDescription(e.target.value)}></textarea>
                     
                     <h6>Course Level</h6>
@@ -135,6 +137,7 @@ function NewCourse(props) {
                     </FormControl>
 
                     <input type="text"  placeholder="Course Language" onChange={e => setLanguage(e.target.value)} required={false}/>
+                    
                     <input type="text"  placeholder="Course Category" onChange={e => setCategory(e.target.value)} required={false}/>
 
                     <ReactTags tags={tags}
@@ -147,7 +150,11 @@ function NewCourse(props) {
 							delimiters={delimiters} />   
                     
                     <input type="number"  placeholder="Course Price in TND" onChange={e => setPrice(e.target.value)} required={false}/>
-                    <input type="text"  placeholder="Image banner Link" onChange={e => setImage(e.target.value)} required={false}/>        
+                    
+                    <input type="text"  placeholder="Image banner Link" 
+                        value="https://fr.metrotime.be/wp-content/uploads/2020/09/placeholder-image.png" 
+                        onChange={e => setImage(e.target.value)} required={false}/>      
+
                     <div className="text-center">
                         <button 
                             onClick={async (e)=>{ await handleClick(e); 

@@ -5,6 +5,8 @@ import axios from 'axios';
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
 
+const user = JSON.parse(localStorage.getItem('profile'));
+
 const StyledRating = withStyles({
     iconFilled: {
       color: '#4ab6dd',
@@ -13,7 +15,6 @@ const StyledRating = withStyles({
       color: '#1692bf',
     },
   })(Rating);
-
 class CourseDetails extends Component {
     constructor(props){
         super(props);
@@ -23,7 +24,8 @@ class CourseDetails extends Component {
             getrate:3,
             setrate:0,
         }
-        
+        //this.setImage =this.setImage.bind(this)
+        this.enroll =this.enroll.bind(this)
     }
     componentDidMount(){
         axios.get("http://localhost:5000/course/CourseDetail?id="+this.props.match.params.idCourse ).then(
@@ -38,6 +40,28 @@ class CourseDetails extends Component {
         )
         
     }
+    enroll(){
+        console.log( "email :  "+user?.result.email  +" -- id:  "+this.props.match.params.idCourse)
+        axios.post("http://localhost:5000/user/addEnrolled", {
+            email :user?.result.email  ,
+            id:this.props.match.params.idCourse
+        }).then(res=>{
+            if (res.data == "yes") {
+                console.log("Enrolled with success ;)" )
+                
+            }
+        })   
+         
+    }
+    /*setImage(img){
+        const empty_img ="https://fr.metrotime.be/wp-content/uploads/2020/09/placeholder-image.png";
+        console.log("image link :"+ img)
+        if (img ===""){
+            return empty_img
+        }
+        else return img
+        
+    }*/
     render() { 
         return ( 
             <div>
@@ -54,7 +78,9 @@ class CourseDetails extends Component {
 
                         <div className="row">
                             <div className="col-lg-8">
-                                <img src={this.state.course.image} className="img-fluid" alt=""/>
+                                <img src={this.state.course.image} 
+                                    className="img-fluid" alt=""
+                                />
                                 <h3 className="mb-3" >What i'm gonna learn</h3>
                                 <p>
                                     {this.state.course.description}
@@ -98,7 +124,7 @@ class CourseDetails extends Component {
                                 </div>
 
                                 <div className="d-flex justify-content-between align-items-center">
-                                    <button className="btn-outlined">Enroll this course</button>
+                                    <button className="btn-outlined" onClick={()=> this.enroll()}>Enroll this course</button>
                                 </div>
                             </div>
                         </div>

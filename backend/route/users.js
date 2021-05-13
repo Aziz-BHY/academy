@@ -1,5 +1,6 @@
 const router = require ("express").Router();
 let User = require('../models/user.model');
+let Course = require('../models/course.model')
 
 router.route('/').post((req, res)=>{
     User.find({email : req.body.email})
@@ -58,6 +59,15 @@ router.route('/addPublished').post((req, res) =>{
         .then(elem => 
           {
             elem.published.push(req.body.id)
+            elem.save()
+          })
+  res.json("yes")
+})
+router.route('/addEnrolled').post((req, res) =>{
+  User.findOne({email: req.body.email})
+        .then(elem => 
+          {
+            elem.enrolled.push({id : req.body.id, progress :0})
             elem.save()
           })
   res.json("yes")

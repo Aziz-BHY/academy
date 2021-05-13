@@ -13,7 +13,8 @@ const courseSchema = new schema ({
     sections : {type : Array},
     price : {type : String},
     image : {type : String},
-    status : {type : String}
+    status : {type : String},
+    student :{type : Number},
 
 
 },
