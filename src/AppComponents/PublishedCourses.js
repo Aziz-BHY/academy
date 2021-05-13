@@ -55,7 +55,7 @@ class PublishedCourses extends Component {
                         <th scope="row">{i+1} </th>
                         <td scope="col">{e.title} </td>
                         <td scope="col">{e.status} </td>
-                        <td scope="col">0</td>
+                        <td scope="col">{e.student} </td>
                         <td scope="col"><Link to={"/ViewPublishedCourse/"+e._id} ><i className="far fa-eye Link-inblue"/></Link> </td>
                         <td scope="col"><Link to={"/EditPublishedCourse/"+e._id} ><i className="far fa-edit Link-inblue"/></Link> </td>
                         <td scope="col">
