@@ -138,7 +138,7 @@ function CoursesList(props) {
                 
                 <div className="row mt-5">
 
-                    <div className="col-lg-4 ml-5">
+                    <div className="col-lg-3">
                         
                         <FormControl component="fieldset">
                             <h3>Filter by category</h3>
@@ -189,7 +189,7 @@ function CoursesList(props) {
                         />
 
                     </div>
-                    <div className="col-lg-8 mt-5 mt-lg-0">
+                    <div className="col-lg-9 mt-5 mt-lg-0">
                         <div data-aos="fade-up">
                         <div className="wrap mb-3">
                             <div className="search" >
@@ -201,10 +201,10 @@ function CoursesList(props) {
                         
                             <div className="row" data-aos="zoom-in" data-aos-delay="100">
                             {courses.map((elem, index) =>    
-                                <div key={index} className="col-lg-4 col-md-6 d-flex align-items-stretch">
+                                <div key={index} className="col-lg-5 col-md-6 d-flex align-items-stretch">
                                 
-                                    <div  className="course-item">
-                                        <img src={elem.image} className="img-fluid" alt="..."/>
+                                    <div  className="course-item mb-3">
+                                        <img src={elem.image} className="img-fluid img-course" alt="..."/>
                                         <div className="course-content">
                                             <div className="d-flex justify-content-between align-items-center mb-3">
                                             <h4>{elem.category} </h4>
@@ -214,14 +214,15 @@ function CoursesList(props) {
                                             <h3><Link to={"/CourseDetails/" +elem._id} >{elem.title} </Link></h3>
                                             <p>{elem.level} </p>
                                             <div className="trainer d-flex justify-content-between align-items-center">
-                                                <div className="trainer-profile d-flex align-items-center">
-                                                    <span>{elem.teacher.name} </span>
-                                                </div>
-                                                <div className="trainer-rank d-flex align-items-center">
-                                                    <i className="bx bx-user"></i>&nbsp;50
-                                                    &nbsp;&nbsp;
-                                                    
-                                                </div>
+                                            <div className="trainer-profile d-flex align-items-center">
+                                                <img src="assets/img/trainers/trainer-1.jpg" className="img-fluid" alt=""/>
+                                                <span>{elem.teacher.name} </span>
+                                            </div>
+                                            <div className="trainer-rank d-flex align-items-center">
+                                                <i className="bx bx-user inblue"></i>&nbsp;{elem.student}
+                                                &nbsp;&nbsp;
+                                                <i className="bx bx-star inblue"></i>&nbsp;65
+                                            </div>
                                             </div>
                                         </div>
                                     </div>

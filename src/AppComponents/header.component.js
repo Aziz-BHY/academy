@@ -16,7 +16,7 @@ const HeaderComponent =()=> {
     const logout = () => {
         dispatch({ type: actionType.LOGOUT });
     
-        history.push('/auth');
+        history.push('/home');
     
         setUser(null);
     };

@@ -10,7 +10,7 @@ class EnrolledCourses extends Component {
         this.state={
             CoursesList : [],
             email : user?.result.email ,
-            rogress :0,
+            Progress :0,
         }
     }
     componentDidMount(){
@@ -49,13 +49,13 @@ class EnrolledCourses extends Component {
                             this.state.CoursesList.map((e,i)=>
                                 <div className="col-lg-5 col-md-6 d-flex align-items-stretch mb-2">
                                     <div key={i} className="course-item">
-                                        <img src="assets/img/course-1.jpg" className="img-fluid" alt="..."/>
+                                        <img src={e.image} className="img-fluid" alt="..."/>
                                         <div className="course-content">
                                             <div className="d-flex justify-content-between align-items-center mb-3">
                                                 <h4>{e.category} </h4>
                                                 
                                             </div>
-                                            <h3><Link to="/CourseDetails">{e.title} </Link></h3>
+                                            <h3><Link to={"/CourseDetails/" +e._id}> {e.title} </Link></h3>
                                             <div className="trainer  justify-content-between align-items-center">
                                                 <Progress value={this.state.Progress} />
                                             </div>

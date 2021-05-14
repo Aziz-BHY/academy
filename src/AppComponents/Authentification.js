@@ -20,7 +20,7 @@ const Authentification =()=> {
             if (res.data == "no") console.log("user already exists ...")
             try {
                 dispatch({ type: AUTH, data: { result, token } });
-                  console.log('dispatch')
+                  ///console.log('dispatch')
                   if (res.data == "yes") history.push('/fillProfile');
                   if (res.data == "no") history.push('/home');
                   
@@ -49,7 +49,7 @@ const Authentification =()=> {
                                             <a className="github"><i className="fab fa-github icon-mr"></i> <span>Sign up with GitHub</span> </a>
                                         </Link>
                                         <Link to="/fillProfile" className="Linky">
-                                            <a className="google"><i class="fab fa-google icon-mr"></i> <span>Sign up with Google</span> </a>
+                                            <a className="google"><i className="fab fa-google icon-mr"></i> <span>Sign up with Google</span> </a>
                                         </Link>
                                         <div>
                                             <GoogleLogin

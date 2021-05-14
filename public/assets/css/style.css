@@ -734,7 +734,10 @@ section {
   border-radius: 5px;
   border: 1px solid #eef0ef;
 }
-
+.course-item .img-course {
+  height: 250px;
+  width: 500px;
+}
 .courses .course-content {
   padding: 15px;
 }
