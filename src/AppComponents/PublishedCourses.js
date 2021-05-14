@@ -53,14 +53,14 @@ class PublishedCourses extends Component {
                     
                         <tr key={i} >
                         <th scope="row">{i+1} </th>
-                        <td scope="col">{e.title} </td>
-                        <td scope="col">{e.status} </td>
-                        <td scope="col">{e.student} </td>
-                        <td scope="col"><Link to={"/ViewPublishedCourse/"+e._id} ><i className="far fa-eye Link-inblue"/></Link> </td>
-                        <td scope="col"><Link to={"/EditPublishedCourse/"+e._id} ><i className="far fa-edit Link-inblue"/></Link> </td>
+                        <td scope="col">{e?.title} </td>
+                        <td scope="col">{e?.status} </td>
+                        <td scope="col">{e?.student} </td>
+                        <td scope="col"><Link to={"/ViewPublishedCourse/"+e?._id} ><i className="far fa-eye Link-inblue"/></Link> </td>
+                        <td scope="col"><Link to={"/EditPublishedCourse/"+e?._id} ><i className="far fa-edit Link-inblue"/></Link> </td>
                         <td scope="col">
                             <i className="far fa-trash-alt Link-inblue"
-                                onClick={()=>this.deleteCourse(e._id)}
+                                onClick={()=>this.deleteCourse(e?._id)}
                             />
                         </td>
                         </tr>

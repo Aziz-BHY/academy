@@ -85,8 +85,25 @@ router.route('/publishedCourses').post((req,res)=>{
           
         })
   })
-  
-  
+})
+
+router.route('/enrolledCourses').post((req,res)=>{
+  var result =[]
+   User.findOne({email : req.body.email})
+    .then(e =>{
+        e.enrolled.map((elem, index) =>{
+          Course.findById(elem.id)
+          .then(eachCourse =>{
+            result.push(eachCourse)
+            //console.log("each Course :"+ result +" \n ____________________")
+            if (index === e.enrolled.length-1){
+              console.log("p --> "+ elem.progress)
+              res.json({Courses :result, progress : elem.progress})
+            }
+          })
+          
+        })
+  })
 })
 
 router.route('/searchCourse').get((req, res) =>{
