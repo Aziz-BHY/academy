@@ -4,14 +4,8 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
-/* 
-bch ki yabda cours enrolled mandhahrouch klmt enroll : 
-na3mlou api natywha id w email  w tchouflna ken course enrolled yes
-sinon no w nzidou state 
-w ba3d naamlouu function hasb state taatyna result 
-*/
-const user = JSON.parse(localStorage.getItem('profile'));
 
+const user = JSON.parse(localStorage.getItem('profile'));
 const StyledRating = withStyles({
     iconFilled: {
       color: '#4ab6dd',
