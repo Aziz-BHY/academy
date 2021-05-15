@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Progress from './Progress'
-import {Link} from 'react-router-dom';
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
+
 
 const user = JSON.parse(localStorage.getItem('profile'));
 const StyledRating = withStyles({
@@ -66,7 +66,7 @@ class CourseDetails extends Component {
         }).then(res=>{
             if (res.data == "yes") {
                 console.log("Enrolled with success ;)" )
-                
+                window.location.reload(false);
             }
         })   
          
