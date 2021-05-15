@@ -83,5 +83,23 @@ router.route('/getUserName').post((req,res)=>{
       res.json(elem.name)
     )
 })
-
+router.route('/verifyEnrolled').post((req,res)=>{
+  var email = req.body.email;
+  var id = req.body.id;
+  var result =""
+  User.findOne({email : email})
+  .then(user=>{
+    var founded = user.enrolled.filter(elem=>{
+      return(elem.id == id)
+    })
+    console.log(founded)
+    if(founded.length ==0) result="no"
+    if(founded.length ==1) result="yes"
+    console.log(result)
+    res.json(result)
+    
+  }
+)
+  
+})
 module.exports = router;

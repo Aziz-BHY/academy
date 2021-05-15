@@ -4,7 +4,12 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
-
+/* 
+bch ki yabda cours enrolled mandhahrouch klmt enroll : 
+na3mlou api natywha id w email  w tchouflna ken course enrolled yes
+sinon no w nzidou state 
+w ba3d naamlouu function hasb state taatyna result 
+*/
 const user = JSON.parse(localStorage.getItem('profile'));
 
 const StyledRating = withStyles({
@@ -23,9 +28,11 @@ class CourseDetails extends Component {
             sectionsList : [],
             getrate:3,
             setrate:0,
+            enrolled :""
         }
         //this.setImage =this.setImage.bind(this)
         this.enroll =this.enroll.bind(this)
+        this.returnEnrollButton = this.returnEnrollButton.bind(this)
     }
     componentDidMount(){
         axios.get("http://localhost:5000/course/CourseDetail?id="+this.props.match.params.idCourse ).then(
@@ -38,6 +45,23 @@ class CourseDetails extends Component {
             })
             }
         )
+        axios.post("http://localhost:5000/user/verifyEnrolled",{
+            id : this.props.match.params.idCourse,
+            email :user?.result.email
+        }).then(res =>{
+            if (res.data =="yes") this.setState({enrolled : "yes"})
+            if (res.data == "no") this.setState({enrolled : "no"})
+        })
+        console.log(this.state.enrolled)
+        
+    }
+    returnEnrollButton(){
+        //console.log(this.state.enrolled)
+        if (this.state.enrolled =="no")
+        return (<div className="d-flex justify-content-between align-items-center">
+        <button className="btn-outlined" onClick={()=> this.enroll()}>Enroll this course</button>
+        </div>)
+        
         
     }
     enroll(){
@@ -123,9 +147,7 @@ class CourseDetails extends Component {
                                 <h5 className="inblue icon-mr"><i className="fas fa-award icon-mr"></i> Certificate of completion</h5>
                                 </div>
 
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <button className="btn-outlined" onClick={()=> this.enroll()}>Enroll this course</button>
-                                </div>
+                                {this.returnEnrollButton()}
                             </div>
                         </div>
                             <h3>Course Sections</h3>
