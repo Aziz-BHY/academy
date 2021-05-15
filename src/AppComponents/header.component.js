@@ -32,7 +32,7 @@ const HeaderComponent =()=> {
     setUser(JSON.parse(localStorage.getItem('profile')));
   }, [location]);
 
-    console.log(user);
+    
 
         return ( 
             <header id="header" className="fixed-top">

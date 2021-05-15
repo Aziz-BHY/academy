@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import { WithContext as ReactTags } from 'react-tag-input';
 import axios from 'axios';
+import SuccessMsg from './SuccessMsg';
 
 const KeyCodes = {
 	comma: 188,
 	enter: 13,
-  };
+};
+
   
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 class EditProfile extends Component {
     constructor(props){
 		super(props)
 		this.state = {
+            success : false,
 			tags : [],
 			suggestions: [
                 {text: 'Web' },
@@ -78,11 +81,21 @@ class EditProfile extends Component {
                 email : this.state.user?.result.email,
                 profile : updatedProfile
                 
-            }).then(res=>{
-                console.log("very well updated  ♥♥ ")
-                
-            })
+        })
+        .then(res=>{
+            console.log("very well updated  ♥♥ ")
+            this.setState({success :true})
+            console.log(this.state.success)
+        })
     }
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({success:false})
+      };
+
     
     render() { 
         const { tags, suggestions } = this.state;
@@ -117,6 +130,13 @@ class EditProfile extends Component {
                             
                             <div className="text-center"><button type="submit"  onClick={this.handleSubmit }>Submit</button></div>
                         </form>
+                    <div className="mt-5" >
+                        <SuccessMsg 
+                            success={this.state.success} 
+                            msg="Profile updated successfully ! " 
+                            handleClose={this.handleClose.bind(this)} 
+                        />
+                    </div>
             </div>
          );
     }

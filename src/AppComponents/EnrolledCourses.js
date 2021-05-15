@@ -22,8 +22,8 @@ class EnrolledCourses extends Component {
                 Progress : res.data.progress
             })
         )    
-        console.log(this.state.CoursesList)
-        console.log(this.state.progress)
+        //console.log(this.state.CoursesList)
+        //console.log(this.state.progress)
 
     }
     refresh(){
@@ -34,8 +34,8 @@ class EnrolledCourses extends Component {
                 Progress : res.data.progress
             })
         )
-        console.log(this.state.CoursesList)
-        console.log(this.state.Progress)
+        //console.log(this.state.CoursesList)
+        //console.log(this.state.Progress)
 
     }
     render() { 
@@ -47,8 +47,8 @@ class EnrolledCourses extends Component {
 
                         {
                             this.state.CoursesList.map((e,i)=>
-                                <div className="col-lg-5 col-md-6 d-flex align-items-stretch mb-2">
-                                    <div key={i} className="course-item">
+                                <div key={i} className="col-lg-5 col-md-6 d-flex align-items-stretch mb-2">
+                                    <div className="course-item">
                                         <img src={e.image} className="img-fluid" alt="..."/>
                                         <div className="course-content">
                                             <div className="d-flex justify-content-between align-items-center mb-3">

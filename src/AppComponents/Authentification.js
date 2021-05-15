@@ -11,7 +11,7 @@ const Authentification =()=> {
     const dispatch = useDispatch();
     const history = useHistory();
     const googleSuccess = async (res) => {
-        console.log(res)
+        //console.log(res)
         const result = res?.profileObj;
         const token = res?.tokenId;
     
@@ -43,15 +43,13 @@ const Authentification =()=> {
                         <div className="wrapper mt-4">
                             <div className="workinghny-block-grid">
                                 <div className="form-right-inf">
-                                    <h2 className="text-center" >Sign up</h2>
+                                    <h2 className="text-center mb-5" >Sign up</h2>
                                     <div className="social-media">
-                                        <Link to="/fillProfile" className="Linky">
-                                            <a className="github"><i className="fab fa-github icon-mr"></i> <span>Sign up with GitHub</span> </a>
-                                        </Link>
-                                        <Link to="/fillProfile" className="Linky">
-                                            <a className="google"><i className="fab fa-google icon-mr"></i> <span>Sign up with Google</span> </a>
-                                        </Link>
-                                        <div>
+                                        
+                                        <a className="github"><i className="fab fa-github icon-mr"></i> <span>Sign up with GitHub</span> </a>
+
+                                        <a className="google"><i className="fab fa-google icon-mr"></i> <span>Sign up with Google</span> </a>
+                                        <div className="mt-4">
                                             <GoogleLogin
                                             clientId="532469346612-2klpg2n8isd862rln18qjsnmbt6qh2iv.apps.googleusercontent.com"
                                             buttonText="Sign up with google"

@@ -25,7 +25,7 @@ class YourProfileInformations extends Component {
         else if (arg =="enrolled") this.setState({style2 : "link-active" , style1:"", style3:""})
         else if (arg =="published") this.setState({style3 : "link-active" ,style2:"", style1:""})
 
-        console.log(this.state.argument)
+        //console.log(this.state.argument)
     }
     returnComponent (){
         if (this.state.argument =="edit" ) return (<EditProfile />)
@@ -46,11 +46,9 @@ class YourProfileInformations extends Component {
                     <div className="container" data-aos="fade-up">
 
                         <div className="row">
-                            <div className="col-lg-8 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
-                                {this.returnComponent()}
-                            </div>
+                            
 
-                            <div className="col-lg-4 pt-4 pt-lg-0 order-2 order-lg-1 content">
+                            <div className="col-lg-4 pt-4 pt-lg-0 order-1 order-lg-1 content mb-5">
                                 <div className="side-bar">
                                     <ul>
                                         <li onClick={()=> this.handleClick("edit")} className={this.state.style1} ><i className="fas fa-angle-double-right"/>
@@ -68,8 +66,9 @@ class YourProfileInformations extends Component {
                                         </li>
                                     </ul>
                                 </div>
-                                
-
+                            </div>
+                            <div className="col-lg-8 order-2 order-lg-2" data-aos="fade-left" data-aos-delay="100">
+                                {this.returnComponent()}
                             </div>
                         </div>
 
