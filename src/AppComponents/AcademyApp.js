@@ -12,6 +12,7 @@ import FatherAddCourse from './FatherAddCourse';
 import SectionDetails from './SectionDetails';
 import ViewPublishedCourse from './ViewPublishedCourse' ;
 import EditCourse from './EditCourse';
+import Profile from './Profile';
 
 class AcademyApp extends Component {
     
@@ -53,6 +54,9 @@ class AcademyApp extends Component {
                     <Route path ="/EditPublishedCourse/:idCourse" component={EditCourse} >
                     </Route>
                     
+                    <Route path="/YourProfile" >
+                        <Profile />
+                    </Route>
                 </Router>
                 
                 
