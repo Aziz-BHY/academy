@@ -6,6 +6,7 @@ const courseSchema = new schema ({
     name : {type : String , required : true},
     intrests : {type : Array },
     organisation : {type : String },
+    image : {type : String},
     post : {type : String},
     enrolled :{type : Array},
     published :{type : Array}

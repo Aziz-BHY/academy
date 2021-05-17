@@ -52,6 +52,7 @@ class AcademyApp extends Component {
                     
                     <Route path ="/EditPublishedCourse/:idCourse" component={EditCourse} >
                     </Route>
+                    
                 </Router>
                 
                 

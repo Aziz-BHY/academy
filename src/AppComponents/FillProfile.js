@@ -59,10 +59,12 @@ class FillProfile extends Component {
         axios.post("http://localhost:5000/user/fillProfile", {
                 email : this.state.user?.result.email,
                 organisation :this.state.organisation ,
+                image : JSON.parse(localStorage.getItem('profile'))?.result.imageUrl,
                 intrests : this.state.tags,
                 post : this.state.post,
                 name: this.state.name
             }).then(res=>{
+                window.location.href='/profile'
                 console.log("Profile is filled ;)")
             })
     }

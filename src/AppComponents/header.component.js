@@ -46,7 +46,6 @@ const HeaderComponent =()=> {
                         <ul>
                             <li><a href="/home">Home</a></li>
                             <li><a href="/coursesList" >Courses</a></li>
-                            <li><a href="/profile">Profile</a></li>
                             
                             
                         </ul>

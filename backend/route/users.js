@@ -31,6 +31,7 @@ router.route('/fillProfile').post((req, res) =>{
               elem[0].organisation=req.body.organisation
               elem[0].intrests=req.body.intrests
               elem[0].post=req.body.post
+              elem[0].image=req.body.image
               elem[0].save()
             })
     res.json("content added")

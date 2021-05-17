@@ -11,7 +11,7 @@ const Authentification =()=> {
     const dispatch = useDispatch();
     const history = useHistory();
     const googleSuccess = async (res) => {
-        //console.log(res)
+        console.log(res)
         const result = res?.profileObj;
         const token = res?.tokenId;
     
@@ -20,7 +20,7 @@ const Authentification =()=> {
             if (res.data == "no") console.log("user already exists ...")
             try {
                 dispatch({ type: AUTH, data: { result, token } });
-                  ///console.log('dispatch')
+                  console.log('dispatch')
                   if (res.data == "yes") history.push('/fillProfile');
                   if (res.data == "no") history.push('/home');
                   
