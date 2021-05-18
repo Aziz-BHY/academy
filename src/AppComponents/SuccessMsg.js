@@ -29,7 +29,7 @@ export default function SuccessMsg(props) {
         <Snackbar 
             className={classes.snack}
             anchorOrigin={{
-            vertical: 'bottom',
+            vertical: 'center',
             horizontal: 'left',
             }} 
             open={props.success} 

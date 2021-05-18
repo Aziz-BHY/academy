@@ -7,6 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { WithContext as ReactTags } from 'react-tag-input';
 import axios from 'axios';
+import WaitingBar from './WaitingBar';
 
 const KeyCodes = {
 	comma: 188,
@@ -33,6 +34,8 @@ function NewCourse(props) {
 	const [LevelValue, setLevelValue] = useState('Beginner');
     const [price, setPrice] = useState();
     const [image, setImage] = useState();
+    const [waiting, setWaiting]=useState(false);
+
     var leID ="ps";
     useEffect(()=>{
         const user = JSON.parse(localStorage.getItem('profile'));
@@ -99,6 +102,7 @@ function NewCourse(props) {
                     console.log("course created YESSS !!!!!! with id :" + res.data.id)
                     setId(res.data.id)
                     leID = res.data.id
+                    setWaiting(true)
                 }
                 
             })
@@ -164,7 +168,12 @@ function NewCourse(props) {
                             Next ➜
                         </button>
                     </div>
+                    
                 </form>
+                <WaitingBar 
+                    msg="Please wait ..."
+                    waiting={waiting}
+                />
             </div>
         );
     
