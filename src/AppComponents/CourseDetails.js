@@ -66,7 +66,7 @@ class CourseDetails extends Component {
         }).then(res=>{
             if (res.data == "yes") {
                 console.log("Enrolled with success ;)" )
-                window.location.reload(false);
+                this.props.history.push('/coursesList')
             }
         })   
          

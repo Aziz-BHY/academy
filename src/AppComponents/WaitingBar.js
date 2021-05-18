@@ -1,7 +1,7 @@
 import React from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 
-export default function SimpleSnackbar(props) {
+export default function WaitingBar(props) {
   
   
   return (

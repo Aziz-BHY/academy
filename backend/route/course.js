@@ -76,8 +76,10 @@ router.route('/publishedCourses').post((req,res)=>{
         e.published.map((elem, index) =>{
           Course.findById(elem)
           .then(eachCourse =>{
-            result.push(eachCourse)
-            //console.log("each Course :"+ result +" \n ____________________")
+            if(eachCourse!= null){
+              result.push(eachCourse)
+              //console.log("each Course :"+ result +" \n ____________________")
+            }
             if (index === e.published.length-1){
               res.json(result)
             }
@@ -234,6 +236,23 @@ router.route('/modifyContent').post((req,res)=>{
 
 router.route('/deleteCourse').post((req, res) =>{
   const fs = require('fs')
+    User.findOne({email:req.body.email}).then((user)=>{
+      user.published=user.published.filter(f=>{
+        return(f!=req.body.id)
+      })
+      user.save()
+    })
+
+    User.find().then((user)=>{
+      user.forEach(element => {
+        
+        element.enrolled=element.enrolled.filter(f=>{
+         return(f.id!=req.body.id)
+        })
+        element.save()
+      });
+      
+    })
 
     Course.findByIdAndDelete(req.body.id).then((e)=>{
       const path = e.path
@@ -244,7 +263,9 @@ router.route('/deleteCourse').post((req, res) =>{
     
         console.log(`directory deleted!`);
     });
-      res.json("course deleted")})
+      res.json("course deleted")
+    })
+    
 })
 
 module.exports = router;
