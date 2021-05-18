@@ -64,7 +64,7 @@ class FillProfile extends Component {
                 post : this.state.post,
                 name: this.state.name
             }).then(res=>{
-                window.location.href='/profile'
+                window.location.href='/settings'
                 console.log("Profile is filled ;)")
             })
     }

@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import Section from './Section';
 import axios from 'axios';
+import SuccessMsg from './SuccessMsg';
 
 class AddSection extends Component {
     constructor(props){
         super(props)
         this.state={
             sections:[],
-            //nrodoih bel id w mbaad nzidou l id fil user published ;) 
             id : this.props.id ,
+            success : false,
+
            
         }
 
@@ -62,11 +64,18 @@ class AddSection extends Component {
                 
             }).then(res=>{
                 console.log("Course content well added !! for the course with id : "+this.state.id)
-                
+                this.setState({ success:true  });
+                window.location.href='/settings'
             })
             
     }
-   
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({success:false})
+    };
     render() { 
         return ( 
             <div className="container-sm top-space mb-4">
@@ -84,6 +93,13 @@ class AddSection extends Component {
                  
                 <button className="PrimaryButton mt-3 mb-4" onClick={this.SaveText} >Submit</button>
                 <br/>
+                <div className="mt-5" >
+                    <SuccessMsg 
+                        success={this.state.success} 
+                        msg="Course added successfully ! " 
+                        handleClose={this.handleClose.bind(this)} 
+                    />
+                </div>
             </div>
          );
     }

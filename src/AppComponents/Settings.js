@@ -4,7 +4,7 @@ import PublishedCourses from './PublishedCourses';
 import EnrolledCourses from './EnrolledCourses';
 import {Link} from 'react-router-dom'
 
-class YourProfileInformations extends Component {
+class Settings extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -38,7 +38,7 @@ class YourProfileInformations extends Component {
             <div>
                 <div className="breadcrumbs" data-aos="fade-in">
                     <div className="container">
-                        <h2>Your profile</h2>
+                        <h2>Settings</h2>
                     </div>
                 </div>
 
@@ -79,4 +79,4 @@ class YourProfileInformations extends Component {
     }
 }
  
-export default YourProfileInformations;
+export default Settings;

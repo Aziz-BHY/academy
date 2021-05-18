@@ -7,7 +7,7 @@ import HeaderComponent from './Header.component';
 import HomeComponent from './Home.component';
 import CourseDetails from './CourseDetails.js';
 import FillProfile from './FillProfile';
-import YourProfileInformations from './YourProfileInformations';
+import Settings from './Settings';
 import FatherAddCourse from './FatherAddCourse';
 import SectionDetails from './SectionDetails';
 import ViewPublishedCourse from './ViewPublishedCourse' ;
@@ -39,8 +39,8 @@ class AcademyApp extends Component {
                         <FillProfile />
                     </Route>
 
-                    <Route path="/profile">
-                        <YourProfileInformations />
+                    <Route path="/settings">
+                        <Settings />
                     </Route>
                     <Route path="/NewCourse" >
                         <FatherAddCourse />

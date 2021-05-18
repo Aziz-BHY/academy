@@ -94,7 +94,7 @@ class EditProfile extends Component {
         }
     
         this.setState({success:false})
-      };
+    };
 
     
     render() { 

@@ -129,7 +129,7 @@ function NewCourse(props) {
                     
                     <h6>Course Level</h6>
                     <FormControl  className="mb-4">
-                        <RadioGroup row aria-label="gender"  value={LevelValue} onChange={handleChangeLevel}>
+                        <RadioGroup row aria-label="level"  value={LevelValue} onChange={handleChangeLevel}>
                             <FormControlLabel value="Beginner" control={<BlueRadio />} label="Beginner" />
                             <FormControlLabel value="Intermediate" control={<BlueRadio />} label="Intermediate" />
                             <FormControlLabel value="Advanced" control={<BlueRadio />} label="Advanced" />

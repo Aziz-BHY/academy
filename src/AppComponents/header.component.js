@@ -53,7 +53,7 @@ const HeaderComponent =()=> {
                         <Toolbar className={classes.toolbar}>
                             {user?.result ? (
                             <div className={classes.profile}>
-                                <a href="/profile">
+                                <a href="/settings">
                                     <Avatar className={classes.purple} alt={user?.result.name} src={user?.result.imageUrl}>{user?.result.name.charAt(0)}</Avatar>
                                 </a>
                                 <Button variant="contained" className={classes.logout} color="secondary" onClick={logout} >Logout</Button>
