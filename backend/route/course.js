@@ -192,6 +192,7 @@ router.route('/SectionDetails').get((req, res) =>
 )
 
 router.route('/modifyContent').post((req,res)=>{
+  //delete all files in directory and create new ones 
   /*var fs = require('fs');
   var SectionDetail =[]
   Course.findById(req.body.id ).then(
@@ -214,21 +215,25 @@ router.route('/modifyContent').post((req,res)=>{
       console.error(err)
     }*/
     
-  Course.findById(req.body.id ).then(
+  Course.findById(req.body.course._id).then(
     elem =>{
+      let sec=[]
+      for(let section of req.body.course.sections){
+        sec.push(section.title)
+      }
+      elem.sections = sec
       elem.title = req.body.course.title ,
-      elem.teacher = req.body.course.teacher ,
       elem.level = req.body.course.level ,
       elem.description = req.body.course.description ,
       elem.category = req.body.course.category ,
       elem.language = req.body.course.language ,
       elem.tags = req.body.course.tags 
-      elem.price = req.body.price,
-      elem.image = req.body.image,
-      elem.title = req.body.sectionTitle
+      elem.price = req.body.course.price,
+      elem.image = req.body.course.image,
 
       elem.save().then(()=> 
-        {res.json("course very well updated")})
+        {console.log("ok")
+          res.json("course very well updated")})
     }
   ).catch(err=> console.log(err))
 

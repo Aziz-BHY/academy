@@ -2,16 +2,19 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Markdown from 'markdown-to-jsx';
 
 class Section extends Component {
     constructor(props){
         super(props)
         this.state = {
+            contenu : this.props.Contenu,
             editorHtml: `
             <h1>This is a new section</h1>
             <p>Add a new section content .. </p> `
         }
         console.log(this.props)
+        
     }
     
     render() { 
@@ -19,7 +22,9 @@ class Section extends Component {
             <div className="mt-3 mb-3 form-style ">
                 <input type="text" className="mb-2" value={this.props.Title} placeholder="Section Title"
                 onChange={
-                    (e)=>this.props.ChangeTitle(e.target.value, this.props.index)}
+                    (e)=>{
+                        
+                        this.props.ChangeTitle(e.target.value, this.props.index)}}
                 />
 
                 <ReactQuill 

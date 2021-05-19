@@ -30,7 +30,6 @@ function EditCourse(props) {
     
     const [id, setID] = useState("")
     const [Title, setTitle] = useState("")
-    const [Teacher, setTeacher] = useState("")
     const [Category, setCategory] = useState("")
     const [Language, setLanguage] = useState("")
     const [Description, setDescription] = useState("")
@@ -41,15 +40,13 @@ function EditCourse(props) {
     const [sectionTitle, setSectionTitle] = useState([])
 	const [sections, setSections ] = useState([{title:"",content:""}])
     const [course, setCourse] = useState({sections:[]})
-
+    const [change, setChange] = useState(false)
     const getDetails= () => {
-       console.log(props)
         axios.get("http://localhost:5000/course/CourseDetail?id="+props.match.params.idCourse ).then(
         res => {
                   
           setID(props.match.params.idCourse)
           setTitle(res.data.course.title)
-          setTeacher(res.data.course.teacher)
           setCategory(res.data.course.category) 
           setLanguage(res.data.course.language)
           setLevelValue(res.data.course.level)
@@ -68,14 +65,20 @@ function EditCourse(props) {
         )
     };
     
-
+    useEffect(() => {
+        getDetails()
+      }, [change]);
     const handleDelete=(i)=> {
        const newTags = tags.filter((tag, index) => index !== i) ;
         setTags(newTags);
+        setChange(true)
+
     }
 
     const handleAddition=(tag)=> {
         setTags( [...tags, tag] );
+        setChange(true)
+
 		
     }
     const handleDrag =(tag, currPos, newPos) =>{
@@ -87,11 +90,14 @@ function EditCourse(props) {
 
         // re-render
         setTags( newTags );
+        setChange(true)
+
     }
         
         const handleChangeLevel = (event) => {
             setLevelValue(event.target.value);
-            console.log(LevelValue)
+            setChange(true)
+
         };
         
         
@@ -102,13 +108,18 @@ function EditCourse(props) {
                 content:`<h1> This is a new section </h1>
                 <p> Add the content ... </p>` }]
             )
+            setChange(true)
+
         }
         const ChangeTitle =(valeur, index )=>{
-            let variable = sections;
+            let variable = [...sections ];
             
             variable[index].title = valeur ;
+
             
-            this.setSections( variable)
+            setSections( variable)
+            setChange(true)
+
             
         }
         const ChangeContent =(valeur, index)=>{
@@ -117,8 +128,21 @@ function EditCourse(props) {
             variable[index].content = valeur ;
             
             setSections(variable);
-            console.log(sections);
+            setChange(true)
+
     
+        }
+        const convertToHTML = (string)=>{
+            var showdown  = require('showdown'),
+            converter = new showdown.Converter();
+            let c = converter.makeHtml(string);
+            return c
+        }
+        const deleteSection= (index)=>{
+            let variable = [...sections];
+            sections.splice(index,1);
+            setSections(sections);
+            setChange(true)
         }
         const SaveText=()=>{
             
@@ -129,7 +153,6 @@ function EditCourse(props) {
                     
                     e.content = converter.makeMarkdown(e.content)
                 })
-                console.log(sections)
                 
                 /*
                 axios.post("http://localhost:5000/course/addSections", {
@@ -141,11 +164,10 @@ function EditCourse(props) {
                 })
                 */
         }
-        const SaveEdits=()=>{
+        const SaveEdits= ()=>{ 
             const CourseModified = {
                 _id : id,
                 title : Title ,
-                teacher: Teacher ,
                 category: Category ,
                 language : Language ,
                 level : LevelValue,
@@ -153,12 +175,11 @@ function EditCourse(props) {
                 tags : tags,
                 image : Image,
                 price : Price,
-                sections : sectionTitle
+                sections : sections
             }
               
             axios.post("http://localhost:5000/course/modifyContent" ,{
                 course : CourseModified,
-                id : id,
                 }).then(
                 res=> console.log("course very well modified !!! ")
             )
@@ -172,8 +193,8 @@ function EditCourse(props) {
                 </div>
                 <button className="PrimaryButton" onClick={getDetails} >Refresh</button>
                 <form className="form-style container-md mb- mt-5">
-                    <input type="text"  placeholder="Course Title" required="false" value={Title} />
-                    <textarea placeholder="Course Description"value={Description}></textarea>
+                    <input type="text"  placeholder="Course Title" required="false" value={Title} onChange={(e)=>{setTitle(e.target.value)}}/>
+                    <textarea placeholder="Course Description"value={Description} onChange={(e)=>{setDescription(e.target.value)}}></textarea>
                     <h6>Course Level</h6>
                     <FormControl component="fieldset" className="mb-4">
                         <RadioGroup row aria-label="gender"  value={LevelValue} onChange={handleChangeLevel}>
@@ -183,9 +204,8 @@ function EditCourse(props) {
                         </RadioGroup>
                     </FormControl>
 
-                    <input type="text"  placeholder="Course Language" value={Language} required ="false"/>
+                    <input type="text"  placeholder="Course Language" value={Language} required ="false" onChange={(e)=>{setLanguage(e.target.value)}}/>
                     <input type="text"  placeholder="Course Category" value={Category} onChange={e => setCategory(e.target.value)} required={false}/>
-                    <input type="text"  placeholder="Course Teacher" value={Teacher} onChange={e => setTeacher(e.target.value)} required={false}/>
 
                     <ReactTags tags={tags}
 									//suggestions={suggestions}
@@ -195,8 +215,8 @@ function EditCourse(props) {
 									placeholder="Course key words ..."
                                     autofocus={false}
 							delimiters={delimiters} />                    
-                    <input type="number"  placeholder="Course Price in TND" value={Price} required ="false"/>
-                    <input type="text"  placeholder="Image banner Link" value={Image} required ="false"/>        
+                    <input type="number"  placeholder="Course Price in TND" value={Price} required ="false" onChange={(e)=>{setPrice(e.target.value)}}/>
+                    <input type="text"  placeholder="Image banner Link" value={Image} required ="false" onChange={(e)=>{setImage(e.target.value)}}/>        
                 </form>
 
             <div className="container-sm top-space mb-4">
@@ -209,11 +229,11 @@ function EditCourse(props) {
                             key={index} 
                             ChangeTitle={ChangeTitle} 
                             ChangeContent={ChangeContent} 
-                            Contenu={c.content}
+                            Contenu={convertToHTML(c.content)}
                             Title={c.title} 
                             index={index} 
                         /> 
-                        <i className="far fa-trash-alt red-icon"/>
+                        <i className="far fa-trash-alt red-icon" onClick={()=>deleteSection(index)}/>
                         
                     </div>
                 )} 

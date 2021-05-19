@@ -21,9 +21,11 @@ connection.once("open", ()=>{
 const CourseRouter = require('./route/course')
 const UserRouter = require('./route/users')
 const AdminRouter = require('./route/admin')
+const CommentRouter = require('./route/comment')
 
 app.use('/course', CourseRouter)
 app.use('/user', UserRouter)
 app.use('/admin', AdminRouter)
+app.use('/comment', CommentRouter)
 
 app.listen(port, ()=> console.log("server is running"))

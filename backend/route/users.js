@@ -1,6 +1,7 @@
 const router = require ("express").Router();
 let User = require('../models/user.model');
 let Course = require('../models/course.model')
+let Comment = require('../models/comment.model')
 
 router.route('/').post((req, res)=>{
     User.find({email : req.body.email})
@@ -66,17 +67,22 @@ router.route('/addPublished').post((req, res) =>{
 })
 router.route('/addEnrolled').post((req, res) =>{
   User.findOne({email: req.body.email})
-        .then(elem => 
+        .then(user => 
           {
-            elem.enrolled.push({id : req.body.id, progress :0})
-            elem.save()
-            res.json("yes")
+            user.enrolled.push({id : req.body.id, progress :0})
+            user.save()
+            Course.findById(req.body.id).then(course =>{
+              course.student=course.student+1
+              course.save()
+              const NewComment = new Comment({
+                EmailUser: user.email,
+                idCourse: course._id,
+                stars: -1,
+                comment: []
+              })
+              NewComment.save().then(()=>{res.json("yes")})
+            })
           })
-  Course.findById(req.body.id).then(elem =>{
-    elem.student=elem.student+1
-    console.log(elem.student)
-    elem.save()
-  })
 })
 router.route('/getUserName').post((req,res)=>{
   User.findOne({email: req.body.email})

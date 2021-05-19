@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import DeleteDialog from './DeleteDialog';
-
 class Admin extends Component {
     constructor(props){
         super(props)
         this.state={
             CoursesList : [],
+            CoursePending: [],
             openDelete : false,
         }
         this.validateCourse=this.validateCourse.bind(this)
@@ -16,7 +16,11 @@ class Admin extends Component {
         
         axios.post("http://localhost:5000/admin/allCourses")
             .then(res =>{ 
-                this.setState({CoursesList : res.data} )
+                for(let course of res.data){
+                    if(course.status == "pending") this.setState({CoursePending: [...this.state.CoursePending, course]})
+                    if(course.status == "active") this.setState({CoursesList: [...this.state.CoursesList, course]})
+
+                }
             }
             
         )    
@@ -37,7 +41,7 @@ class Admin extends Component {
             
         }).then
         (res => console.log("ok"))
-        //window.location.reload(false);
+        window.location.reload(false);
     }
     closeDialog(){
         this.setState({ openDelete: false });
@@ -63,12 +67,12 @@ class Admin extends Component {
                             <th scope="col">Students</th>
                             <th scope="col">View</th>
                             <th scope="col">Validate</th>
-                            <th scope="col" onClick={this.openDialog.bind(this)} >Delete</th>
+                            <th scope="col">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
                             {   
-                                this.state.CoursesList.map((e, i)=>
+                                this.state.CoursePending.map((e, i)=>
                                 
                                     <tr key={i} >
                                     <th scope="row">{i+1} </th>
@@ -81,6 +85,50 @@ class Admin extends Component {
                                             onClick={()=> this.validateCourse(e._id)}
                                         /> 
                                     </td>
+                                    <td scope="col">
+                                        <i className="far fa-trash-alt Link-inblue"
+                                            onClick={this.openDialog.bind(this)}
+                                            
+                                        />
+                                        <DeleteDialog 
+                                            open={this.state.openDelete}
+                                            handleClose={this.closeDialog.bind(this)}
+                                            handleAgree={()=>this.deleteCourse(e._id,e.teacher.email)}
+                                        />
+                                    </td>
+                                    </tr>
+
+                                    
+                                )
+                            }
+
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div className="container-fluid mt-3">
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Students</th>
+                            <th scope="col">View</th>
+                            <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {   
+                                this.state.CoursesList.map((e, i)=>
+                                
+                                    <tr key={i} >
+                                    <th scope="row">{i+1} </th>
+                                    <td scope="col">{e.title} </td>
+                                    <td scope="col">{e.status} </td>
+                                    <td scope="col">{e.student} </td>
+                                    <td scope="col"><Link to={"/CourseDetails/"+e._id} ><i className="far fa-eye Link-inblue"/></Link> </td>
+                                    
                                     <td scope="col">
                                         <i className="far fa-trash-alt Link-inblue"
                                             onClick={this.openDialog.bind(this)}

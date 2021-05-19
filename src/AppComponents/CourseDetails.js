@@ -17,16 +17,22 @@ const StyledRating = withStyles({
 class CourseDetails extends Component {
     constructor(props){
         super(props);
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         this.state = {
             course : {sections:[], teacher:{name:"",email:""}},
             sectionsList : [],
             getrate:3,
             setrate:0,
-            enrolled :""
+            enrolled :"",
+            currentDate: date,
+            reviewContent:""
         }
         //this.setImage =this.setImage.bind(this)
         this.enroll =this.enroll.bind(this)
         this.returnEnrollButton = this.returnEnrollButton.bind(this)
+        this.displayCommentsArea = this.displayCommentsArea.bind(this)
+        this.submitReview = this.submitReview.bind(this)
     }
     componentDidMount(){
         axios.get("http://localhost:5000/course/CourseDetail?id="+this.props.match.params.idCourse ).then(
@@ -58,6 +64,30 @@ class CourseDetails extends Component {
         
         
     }
+    displayCommentsArea(){
+        if (this.state.enrolled =="yes")
+        return (<div className="single-section">
+                    <div className="margin-lt">
+                        <StyledRating
+                            value={this.state.setrate}
+                            onChange={(event, y) => {
+                                this.setState({setrate : y});
+                            }}
+                        />
+                    </div>
+                    <textarea 
+                        type="text" 
+                        className="input-comment" 
+                        placeholder="Type your comment here ..."
+                        onChange={(e)=>{this.setState({ reviewContent: e.target.value });}}
+                    />
+                    <br/>
+                    <button className="PrimaryButton" onClick={this.submitReview} >Submit</button>
+                </div>)
+        else return (<div className="single-section text-center">
+            <h6  >You can't post a review before enrolling the course !</h6>
+        </div>)
+    }
     enroll(){
         console.log( "email :  "+user?.result.email  +" -- id:  "+this.props.match.params.idCourse)
         axios.post("http://localhost:5000/user/addEnrolled", {
@@ -70,6 +100,20 @@ class CourseDetails extends Component {
             }
         })   
          
+    }
+    submitReview(){
+        axios.post("http://localhost:5000/comment/add", {
+            date : this.state.currentDate,
+            id : this.state.course._id,
+            stars : this.state.setrate,
+            content : this.state.reviewContent
+
+        }).then(res=>{
+            if (res.data == "yes") {
+                console.log("Review added with success ;)" )
+                
+            }
+        })  
     }
     /*setImage(img){
         const empty_img ="https://fr.metrotime.be/wp-content/uploads/2020/09/placeholder-image.png";
@@ -195,19 +239,7 @@ class CourseDetails extends Component {
                             </div>
 
                             <h3>Submit your own review</h3>
-                            <div className="single-section">
-                                <div className="margin-lt">
-                                    <StyledRating
-                                        value={this.state.setrate}
-                                        onChange={(event, y) => {
-                                            this.setState({setrate : y});
-                                        }}
-                                    />
-                                </div>
-                                <textarea type="text" className="input-comment" placeholder="Type your comment here ..."/>
-                                <br/>
-                                <button className="PrimaryButton" >Submit</button>
-                            </div>
+                            {this.displayCommentsArea()}
 
                     </div>
                 </section>
