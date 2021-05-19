@@ -55,9 +55,8 @@ class AcademyApp extends Component {
                     <Route path ="/EditPublishedCourse/:idCourse" component={EditCourse} >
                     </Route>
                     
-                    <Route path="/YourProfile" >
-                        <Profile />
-                    </Route>
+                    <Route path="/YourProfile/:UserEmail" component={Profile} />
+                       
                     <Route path="/Admin">
                         <Admin />
                     </Route>

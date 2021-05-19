@@ -9,6 +9,9 @@ import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar} from '@material-ui/core';
 
+const user = JSON.parse(localStorage.getItem('profile'))
+const email = user?.result.email
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -83,7 +86,7 @@ export default function ProfileMenu(props) {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList  id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                  <MenuItem ><a className="MenuLink" href='/Yourprofile'>My Profile</a> </MenuItem>
+                  <MenuItem ><a className="MenuLink" href={'/Yourprofile/'+user?.result.email}>My Profile</a> </MenuItem>
                   <MenuItem ><a className="MenuLink" href='/settings'>Settings</a> </MenuItem>
                   <MenuItem ><a className="MenuLink" href='/NewCourse'>New Course</a> </MenuItem>
                   <MenuItem className={classes.logout} onClick={props.logout}  >Logout</MenuItem>

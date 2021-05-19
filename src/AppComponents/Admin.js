@@ -74,7 +74,7 @@ class Admin extends Component {
                                     <td scope="col">{e.title} </td>
                                     <td scope="col">{e.status} </td>
                                     <td scope="col">{e.student} </td>
-                                    <td scope="col"><Link to={"/ViewPublishedCourse/"+e._id} ><i className="far fa-eye Link-inblue"/></Link> </td>
+                                    <td scope="col"><Link to={"/CourseDetails/"+e._id} ><i className="far fa-eye Link-inblue"/></Link> </td>
                                     <td scope="col">
                                         <i className="fas fa-check-circle Link-inblue"
                                             onClick={()=> this.validateCourse(e._id).bind(this)}
