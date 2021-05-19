@@ -5,7 +5,7 @@ import {  Toolbar, Avatar, Button } from '@material-ui/core';
 import * as actionType from '../constants/actionTypes';
 import useStyles from './SpecialCss/header_styles';
 import decode from 'jwt-decode';
-
+import ProfileMenu from './ProfileMenu';
 const HeaderComponent =()=> {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const HeaderComponent =()=> {
     const logout = () => {
         dispatch({ type: actionType.LOGOUT });
     
-        history.push('/home');
+        window.location.href='/home'
     
         setUser(null);
     };
@@ -46,24 +46,23 @@ const HeaderComponent =()=> {
                         <ul>
                             <li><a href="/home">Home</a></li>
                             <li><a href="/coursesList" >Courses</a></li>
-                            <li><a href="/Yourprofile">Profile</a></li>
+                            <li><a href="/admin">Admin</a> </li>
                             
                             
                         </ul>
+                        
+                        
+                        <i className="bi bi-list mobile-nav-toggle"></i>
+                    </nav>
                         <Toolbar className={classes.toolbar}>
                             {user?.result ? (
-                            <div className={classes.profile}>
-                                <a href="/settings">
-                                    <Avatar className={classes.purple} alt={user?.result.name} src={user?.result.imageUrl}>{user?.result.name.charAt(0)}</Avatar>
-                                </a>
-                                <Button variant="contained" className={classes.logout} color="secondary" onClick={logout} >Logout</Button>
+                            <div >
+                                <ProfileMenu user={user} logout={logout} />
                             </div>
                             ) : (
                                 <a href="/authentification" className="get-started-btn">Get Started ➜ </a>
                             )}
                         </Toolbar>
-                        <i className="bi bi-list mobile-nav-toggle"></i>
-                    </nav>
                     
                     
                 </div>

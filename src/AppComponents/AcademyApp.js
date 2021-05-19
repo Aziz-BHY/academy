@@ -13,6 +13,7 @@ import SectionDetails from './SectionDetails';
 import ViewPublishedCourse from './ViewPublishedCourse' ;
 import EditCourse from './EditCourse';
 import Profile from './Profile';
+import Admin from './Admin';
 
 class AcademyApp extends Component {
     
@@ -56,6 +57,9 @@ class AcademyApp extends Component {
                     
                     <Route path="/YourProfile" >
                         <Profile />
+                    </Route>
+                    <Route path="/Admin">
+                        <Admin />
                     </Route>
                 </Router>
                 

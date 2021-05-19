@@ -29,7 +29,7 @@ class PublishedCourses extends Component {
             {email :this.state.email})
             .then(res => this.setState({CoursesList : res.data})
         )    
-        console.log(this.state.CoursesList)
+        //console.log(this.state.CoursesList)
     }
     deleteCourse(id){
         

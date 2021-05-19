@@ -124,7 +124,7 @@ router.route('/searchCourse').get((req, res) =>{
     levelTrue.push(i)
   }
    
-    Course.find()
+    Course.find({status:"active"})
           .then (foundCourses => {
             foundCourses=foundCourses.filter((course)=>{
               return( ((course.price*1)>=price[0]*1) && ((course.price*1)<=(price[1]*1)) );
@@ -267,5 +267,6 @@ router.route('/deleteCourse').post((req, res) =>{
     })
     
 })
+
 
 module.exports = router;
