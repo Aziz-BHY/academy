@@ -10,6 +10,7 @@ class Admin extends Component {
             CoursesList : [],
             openDelete : false,
         }
+        this.validateCourse=this.validateCourse.bind(this)
     }
     componentDidMount(){
         
@@ -36,7 +37,7 @@ class Admin extends Component {
             
         }).then
         (res => console.log("ok"))
-        window.location.reload(false);
+        //window.location.reload(false);
     }
     closeDialog(){
         this.setState({ openDelete: false });
@@ -77,7 +78,7 @@ class Admin extends Component {
                                     <td scope="col"><Link to={"/CourseDetails/"+e._id} ><i className="far fa-eye Link-inblue"/></Link> </td>
                                     <td scope="col">
                                         <i className="fas fa-check-circle Link-inblue"
-                                            onClick={()=> this.validateCourse(e._id).bind(this)}
+                                            onClick={()=> this.validateCourse(e._id)}
                                         /> 
                                     </td>
                                     <td scope="col">
