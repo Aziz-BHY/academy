@@ -67,7 +67,7 @@ function EditCourse(props) {
     
     useEffect(() => {
         getDetails()
-      }, [change]);
+      }, []);
     const handleDelete=(i)=> {
        const newTags = tags.filter((tag, index) => index !== i) ;
         setTags(newTags);
@@ -140,30 +140,12 @@ function EditCourse(props) {
         }
         const deleteSection= (index)=>{
             let variable = [...sections];
-            sections.splice(index,1);
-            setSections(sections);
+            variable.splice(index,1);
+            console.log(sections)
+            setSections(variable);
             setChange(true)
         }
-        const SaveText=()=>{
-            
-            var showdown  = require('showdown'),
-                converter = new showdown.Converter();
-    
-                sections.map((e, index)=> {
-                    
-                    e.content = converter.makeMarkdown(e.content)
-                })
-                
-                /*
-                axios.post("http://localhost:5000/course/addSections", {
-                    sections: this.state.sections ,
-                    title : this.state.title,
-                    teacher : this.state.teacher
-                }).then(res=>{
-                    console.log("Course content well added !! !")
-                })
-                */
-        }
+        
         const SaveEdits= ()=>{ 
             const CourseModified = {
                 _id : id,
@@ -181,7 +163,7 @@ function EditCourse(props) {
             axios.post("http://localhost:5000/course/modifyContent" ,{
                 course : CourseModified,
                 }).then(
-                res=> console.log("course very well modified !!! ")
+                res=> console.log(res.data)
             )
         }
         return ( 

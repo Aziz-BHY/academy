@@ -105,7 +105,7 @@ class CourseDetails extends Component {
         }).then(res=>{
             if (res.data == "yes") {
                 console.log("Enrolled with success ;)" )
-                this.props.history.push('/coursesList')
+                window.location.reload()
             }
         })   
          
@@ -148,7 +148,7 @@ class CourseDetails extends Component {
         return ( 
             <div>
                 
-                <div className="breadcrumbs" data-aos="fade-in">
+                <div className="breadcrumbs" >
                     <div className="container">
                         <h2>{this.state.course.title}</h2>
                     </div>
@@ -156,7 +156,7 @@ class CourseDetails extends Component {
 
                     
                 <section id="course-details" className="course-details">
-                    <div className="container" data-aos="fade-up">
+                    <div className="container">
 
                         <div className="row">
                             <div className="col-lg-8">
@@ -239,8 +239,8 @@ class CourseDetails extends Component {
 
                             <h3>Reviews</h3>
                             <div className="single-section">
-                                {   this.state.comments.length == 0 ? <div></div> :
-                                    this.state.comments.map((c,i)=>                                        <div>
+                                {   
+                                    this.state.comments.map((c,i)=>   <div>
                                             <span className="user-name margin-lt">
                                                 {c.EmailUser}
                                             </span>
@@ -261,6 +261,7 @@ class CourseDetails extends Component {
                                             
                                         </div>
                                     )
+                                    
                                 
                                 }
                                 

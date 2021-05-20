@@ -191,34 +191,16 @@ router.route('/SectionDetails').get((req, res) =>
   )}
 )
 
-router.route('/modifyContent').post((req,res)=>{
-  //delete all files in directory and create new ones 
-  /*var fs = require('fs');
-  var SectionDetail =[]
-  Course.findById(req.body.id ).then(
-  elem => {
-      var sections = elem.sections
-      var path = elem.path
-    try {
-      sections.map((e,i)=>
-      {
-        var data = fs.readFileSync(path+"/"+e+".md", 'utf8')
-        var x={title:e,content:data}
-        SectionDetail.push(x)
-      })
-      res.json(
-        {sections : SectionDetail}
-        
-      );
-    } 
-    catch (err) {
-      console.error(err)
-    }*/
-    
+router.route('/modifyContent').post(async(req,res)=>{
+  const fs = require('fs')
+  
+    var sections = req.body.course.sections ;
+
   Course.findById(req.body.course._id).then(
     elem =>{
+      const path = elem.path
       let sec=[]
-      for(let section of req.body.course.sections){
+      for(let section of sections){
         sec.push(section.title)
       }
       elem.sections = sec
@@ -231,12 +213,28 @@ router.route('/modifyContent').post((req,res)=>{
       elem.price = req.body.course.price,
       elem.image = req.body.course.image,
 
-      elem.save().then(()=> 
-        {console.log("ok")
-          res.json("course very well updated")})
+      elem.save().then(()=> {
+        console.log("meta data saved");      
+        //we create a new directory with the new content
+        sections.map((e,index)=> {
+          var sectionPath = path +'/' + e.title + '.md';
+          fs.writeFile(sectionPath , e.content, function(err) {"error error"})
+          console.log("i saved the file : "+sectionPath)
+        })
+        
+      })
+      //we remove the directory with the old files
+        fs.rmdir(path, { recursive: true }, (err) => {
+          if (err) {
+              console.log(err)
+          }
+      
+          console.log(`directory deleted! bcs will we create another one`);
+        });
+        
+      res.json("course very well updated")
     }
-  ).catch(err=> console.log(err))
-
+  )
 })
 
 router.route('/deleteCourse').post((req, res) =>{
@@ -266,7 +264,7 @@ router.route('/deleteCourse').post((req, res) =>{
             console.log(err)
         }
     
-        console.log(`directory deleted!`);
+       // console.log(`directory deleted!`);
     });
       res.json("course deleted")
     })

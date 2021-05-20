@@ -3,7 +3,7 @@ let Comment = require('../models/comment.model')
 
 router.route('/add').post((req, res)=>{
     Comment.findOne({idCourse : req.body.id,EmailUser : req.body.email}).then(com=>{
-        if (com.start == -1){
+        if (com.stars == -1){
             com.stars = req.body.stars
         }
         
@@ -18,8 +18,15 @@ router.route('/add').post((req, res)=>{
     })
 })
 router.route('/get').post((req, res)=>{
+    var NbComments = 0;
     Comment.find({idCourse : req.body.id}).then(com=>{
-        console.log(com)
+        //console.log(com)
+        // calucler nb de commentaires .. à revoir plus tard
+        com.forEach(element => {
+            if (element.comment.length != 0) 
+            NbComments=NbComments+element.comment.length
+        });
+        console.log(NbComments)
         res.json(com)
 
     })

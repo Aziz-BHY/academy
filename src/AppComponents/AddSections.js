@@ -18,6 +18,7 @@ class AddSection extends Component {
         this.ChangeContent = this.ChangeContent.bind(this)
         this.ChangeTitle = this.ChangeTitle.bind(this)
         this.SaveText = this.SaveText.bind(this)
+        this.deleteSection = this.deleteSection.bind(this)
     }
     addNewSection(){
         this.setState({
@@ -65,9 +66,17 @@ class AddSection extends Component {
             }).then(res=>{
                 console.log("Course content well added !! for the course with id : "+this.state.id)
                 this.setState({ success:true  });
-                window.location.href='/settings'
+                setTimeout(()=>{
+                    window.location.href='/settings'
+                }, 2000)
+                
             })
             
+    }
+    deleteSection(index){
+        let variable = [...this.state.sections];
+        variable.splice(index,1);
+        this.setState({ sections:  variable});
     }
     handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -86,20 +95,18 @@ class AddSection extends Component {
                     <div key={index} className="mb-5">
                         <h5>Section {index+1} </h5>
                         <Section key={index} ChangeTitle={this.ChangeTitle} ChangeContent={this.ChangeContent} Contenu={c.content} index={index} /> 
-                        <i className="far fa-trash-alt red-icon"/>
+                        <i className="far fa-trash-alt red-icon" onClick={()=>this.deleteSection(index)}/>
                         
                     </div>
                 )} 
                  
                 <button className="PrimaryButton mt-3 mb-4" onClick={this.SaveText} >Submit</button>
                 <br/>
-                <div className="mt-5" >
                     <SuccessMsg 
                         success={this.state.success} 
                         msg="Course added successfully ! " 
                         handleClose={this.handleClose.bind(this)} 
                     />
-                </div>
             </div>
          );
     }
