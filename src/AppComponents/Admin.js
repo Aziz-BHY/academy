@@ -57,6 +57,9 @@ class Admin extends Component {
                         <h2> Admin Dashboard</h2>
                     </div>
                 </div>
+                <h3>
+                    Pending courses
+                </h3>
                 <div className="container-fluid mt-3">
                     <table className="table table-striped">
                         <thead>
@@ -106,6 +109,9 @@ class Admin extends Component {
                         </tbody>
                     </table>
                 </div>
+                <h3>
+                    Active courses
+                </h3>
                 <div className="container-fluid mt-3">
                     <table className="table table-striped">
                         <thead>

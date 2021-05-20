@@ -3,7 +3,7 @@ import Progress from './Progress'
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
-
+import './SpecialCss/style.css'
 
 const user = JSON.parse(localStorage.getItem('profile'));
 const StyledRating = withStyles({
@@ -14,6 +14,12 @@ const StyledRating = withStyles({
       color: '#1692bf',
     },
   })(Rating);
+  const SimpleRating = withStyles({
+    iconFilled: {
+      color: '#4ab6dd',
+    },
+    
+  })(Rating);  
 class CourseDetails extends Component {
     constructor(props){
         super(props);
@@ -22,37 +28,40 @@ class CourseDetails extends Component {
         this.state = {
             course : {sections:[], teacher:{name:"",email:""}},
             sectionsList : [],
-            getrate:3,
             setrate:0,
             enrolled :"",
             currentDate: date,
-            reviewContent:""
+            reviewContent:"",
+            disabled : true,
+            comments : [],
         }
         //this.setImage =this.setImage.bind(this)
         this.enroll =this.enroll.bind(this)
         this.returnEnrollButton = this.returnEnrollButton.bind(this)
         this.displayCommentsArea = this.displayCommentsArea.bind(this)
         this.submitReview = this.submitReview.bind(this)
+        this.getComments = this.getComments.bind(this)
     }
     componentDidMount(){
+            
         axios.get("http://localhost:5000/course/CourseDetail?id="+this.props.match.params.idCourse ).then(
             res => {
                 console.log(res.data.course)
                 this.setState({
                 course : res.data.course,
                 sectionsList : res.data.course.sections
-                
-            })
+                })
+                this.getComments();
             }
         )
+         
         axios.post("http://localhost:5000/user/verifyEnrolled",{
             id : this.props.match.params.idCourse,
             email :user?.result.email
         }).then(res =>{
-            if (res.data =="yes") this.setState({enrolled : "yes"})
+            if (res.data =="yes") this.setState({enrolled : "yes", disabled:false})
             if (res.data == "no") this.setState({enrolled : "no"})
         })
-        console.log(this.state.enrolled)
         
     }
     returnEnrollButton(){
@@ -101,17 +110,28 @@ class CourseDetails extends Component {
         })   
          
     }
+    getComments(){
+        
+        axios.post("http://localhost:5000/comment/get", {
+            id : this.state.course._id,
+
+        }).then(res=>{
+            this.setState({ comments:res.data  });
+            console.log(this.state.comments)
+        })  
+    }
     submitReview(){
         axios.post("http://localhost:5000/comment/add", {
             date : this.state.currentDate,
             id : this.state.course._id,
             stars : this.state.setrate,
-            content : this.state.reviewContent
+            content : this.state.reviewContent,
+            email : user?.result.email ,
 
         }).then(res=>{
             if (res.data == "yes") {
                 console.log("Review added with success ;)" )
-                
+                this.getComments()
             }
         })  
     }
@@ -191,8 +211,8 @@ class CourseDetails extends Component {
                             <h3>Course Sections</h3>
                             <div className="single-section">
                                 {this.state.sectionsList.map((e, index)=>
-                                <div className="row mt-2 mb-2 container">
-                                    <div key={index} className="col-xl-4 d-flex align-items-stretch">
+                                <div className="row mt-2 mb-2 container" key={index}>
+                                    <div  className="col-xl-4 d-flex align-items-stretch">
                                         
                                         <span className="section-title">
                                             <b className="icon-mr inblue">{index+1}.</b>
@@ -205,10 +225,11 @@ class CourseDetails extends Component {
                                         </div>
                                     </div>
                                     <div className="col-xl-4 d-flex align-items-stretch">
-                                        <button className="btn-get-started mt-1">
-                                            <a href={"/SectionDetails/"+this.state.course._id+"/"+index} className="Linky"> View details</a> 
+                                    <a href={"/SectionDetails/"+this.state.course._id+"/"+index} className="Linky">
+                                        <button className="btn-get-started mt-1" disabled={this.state.disabled}>
+                                             View details
                                         </button>
-
+                                    </a> 
                                     </div>
                                 </div>
                                 )
@@ -218,24 +239,31 @@ class CourseDetails extends Component {
 
                             <h3>Reviews</h3>
                             <div className="single-section">
-                                <div>
-                                    <span className="user-name margin-lt">
-                                        Emilia Clarcke
-                                    </span>
-                                    <span className="margin-lt">
-                                        <StyledRating
-                                            value={this.state.getrate}
-                                            onChange={(event, x) => {
-                                                this.setState({getrate : x});
-                                            }}
-                                        />
-                                    </span>
-                                    
-                                    <p className="comment">
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum ut sed, dolorum asperiores perspiciatis provident,
-                                        odit maxime doloremque aliquam.
-                                    </p>
-                                </div>
+                                {   this.state.comments.length == 0 ? <div></div> :
+                                    this.state.comments.map((c,i)=>                                        <div>
+                                            <span className="user-name margin-lt">
+                                                {c.EmailUser}
+                                            </span>
+                                            <span className="margin-lt">
+                                                <SimpleRating value={c.stars}  />
+                                            </span>
+                                            
+                                            <p className="comment">
+                                                {c.comment.map((e,i)=>
+                                                    <span>
+                                                    <h5>{e.content}</h5> 
+                                                    <p>{e.date}</p>
+                                                    </span>
+                                                )}
+                                                
+                                            </p>
+                                            <hr/>
+                                            
+                                        </div>
+                                    )
+                                
+                                }
+                                
                             </div>
 
                             <h3>Submit your own review</h3>

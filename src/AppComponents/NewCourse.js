@@ -33,7 +33,7 @@ function NewCourse(props) {
     const [tags , setTags] = useState([])
 	const [LevelValue, setLevelValue] = useState('Beginner');
     const [price, setPrice] = useState();
-    const [image, setImage] = useState();
+    const [image, setImage] = useState("https://webcolours.ca/wp-content/uploads/2020/10/webcolours-unknown.png");
     const [waiting, setWaiting]=useState(false);
 
     var leID ="ps";
@@ -156,7 +156,7 @@ function NewCourse(props) {
                     <input type="number"  placeholder="Course Price in TND" onChange={e => setPrice(e.target.value)} required={false}/>
                     
                     <input type="text"  placeholder="Image banner Link" 
-                        value="https://fr.metrotime.be/wp-content/uploads/2020/09/placeholder-image.png" 
+                        value={image}
                         onChange={e => setImage(e.target.value)} required={false}/>      
 
                     <div className="text-center">
