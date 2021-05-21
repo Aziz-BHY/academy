@@ -198,11 +198,28 @@ router.route('/modifyContent').post(async(req,res)=>{
 
   Course.findById(req.body.course._id).then(
     elem =>{
-      const path = elem.path
       let sec=[]
       for(let section of sections){
         sec.push(section.title)
       }
+
+       //we remove the directory with the old files
+       fs.readdir(path, (err, files) => {
+        if (err) throw err;
+      
+        for (const file of files) {
+          fs.unlink(path+"/"+file, err => {
+            if (err) throw err;
+          });
+        }
+      });
+       /*fs.rmdir(path, { recursive: true }, (err) => {
+        if (err) {
+            console.log(err)
+        }
+    
+        console.log(`directory deleted! bcs will we create another one`);
+      });  */  
       elem.sections = sec
       elem.title = req.body.course.title ,
       elem.level = req.body.course.level ,
@@ -213,8 +230,9 @@ router.route('/modifyContent').post(async(req,res)=>{
       elem.price = req.body.course.price,
       elem.image = req.body.course.image,
 
-      elem.save().then(()=> {
-        console.log("meta data saved");      
+      elem.save().then( ()=> {
+        console.log("meta data saved"); 
+        
         //we create a new directory with the new content
         sections.map((e,index)=> {
           var sectionPath = path +'/' + e.title + '.md';
@@ -223,14 +241,7 @@ router.route('/modifyContent').post(async(req,res)=>{
         })
         
       })
-      //we remove the directory with the old files
-        fs.rmdir(path, { recursive: true }, (err) => {
-          if (err) {
-              console.log(err)
-          }
       
-          console.log(`directory deleted! bcs will we create another one`);
-        });
         
       res.json("course very well updated")
     }
