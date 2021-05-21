@@ -32,7 +32,7 @@ class CourseDetails extends Component {
             enrolled :"",
             currentDate: date,
             reviewContent:"",
-            disabled : true,
+            disabled : false,
             comments : [],
         }
         //this.setImage =this.setImage.bind(this)

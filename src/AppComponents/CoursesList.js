@@ -118,6 +118,16 @@ function CoursesList(props) {
         setSearchTerm(event.currentTarget.value) ;
   
     }
+    /*const EmailToName= ( email)=>{
+    
+        axios.post(("http://localhost:5000/user/getUserName"),{
+            email : email
+        }).then(res=>{
+            console.log('le nom convenable est --> '+res.data)
+            return(res.data)
+            
+        })
+    }*/
 
     const { web, cloud, programming } = CategoryCheck;
     const { Beginner, Intermediate, Advanced } = LevelCheck;
@@ -206,6 +216,8 @@ function CoursesList(props) {
                                     <div  className="course-item mb-3">
                                         <img src={elem.image} className="img-fluid img-course" alt="..."/>
                                         <div className="course-content">
+
+
                                             <div className="d-flex justify-content-between align-items-center mb-3">
                                             <h4>{elem.category} </h4>
                                             <p className="price">{elem.price} TND</p>

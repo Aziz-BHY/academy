@@ -69,7 +69,7 @@ router.route('/addEnrolled').post((req, res) =>{
   User.findOne({email: req.body.email})
         .then(user => 
           {
-            user.enrolled.push({id : req.body.id, progress :0})
+            user.enrolled.push({id : req.body.id, progress :-1})
             user.save()
             Course.findById(req.body.id).then(course =>{
               course.student=course.student+1
@@ -84,12 +84,47 @@ router.route('/addEnrolled').post((req, res) =>{
             })
           })
 })
+
+ 
+router.route('/makeProgress').post((req,res)=>{
+  User.findOne({email: req.body.email}).then(user=>{
+    for(let enroll of user.enrolled){
+      if(enroll.id == req.body.idCourse){
+        if(req.body.indice> enroll.progress){
+          enroll.progress = req.body.indice;
+        }
+        
+        break;
+      }
+    }
+    console.log(user.enrolled)
+    /*user.enrolled.forEach(element => {
+      if(element.id == req.body.idCourse){
+        console.log("j'ai trouvé le cours --> "+element.id)
+        element.progress = element.progress+1;
+        
+        console.log(user.enrolled)
+      }
+      
+    });*/
+    user.markModified('enrolled')
+    user.save().then(use=>{
+      res.json("ok")
+      console.log("finiiiiiiiiito")
+    });
+      
+
+  })
+})
+
+
 router.route('/getUserName').post((req,res)=>{
   User.findOne({email: req.body.email})
     .then(elem =>
       res.json(elem.name)
     )
 })
+
 router.route('/verifyEnrolled').post((req,res)=>{
   var email = req.body.email;
   var id = req.body.id;
@@ -107,6 +142,6 @@ router.route('/verifyEnrolled').post((req,res)=>{
     
   }
 )
-  
 })
+
 module.exports = router;

@@ -4,6 +4,7 @@ import axios from 'axios';
 import Markdown from 'markdown-to-jsx';
 import {Link} from 'react-router-dom';
 
+const user = JSON.parse(localStorage.getItem('profile'))
 class SectionDetails extends Component {
     constructor(props){
         super(props)
@@ -26,10 +27,20 @@ class SectionDetails extends Component {
     }
     nextButton(){
         if (this.state.index != this.state.section.length-1)
-            return  <div className="text-right col">
+            return  <div className="text-right col" onClick={this.makeProgress.bind(this)}>
                         <button className="PrimaryButton">
                             <a href={"/SectionDetails/"+this.props.match.params.idCourse+"/"+(this.state.index+1)} className="Linky">
                                 Next <i class="fas fa-caret-right"/>
+                            </a > 
+                        </button>
+                    </div> 
+    }
+    finishButton(){
+        if (this.state.index == this.state.section.length-1)
+            return  <div className="text-right col" onClick={this.makeProgress.bind(this)}>
+                        <button className="PrimaryButton">
+                            <a /*href={/*"/CourseDetails/" +this.props.match.params.idCourse*/  className="Linky">
+                                Finish <i class="fas fa-caret-right"/>
                             </a > 
                         </button>
                     </div> 
@@ -42,10 +53,17 @@ class SectionDetails extends Component {
                 title : res.data.title,
                 section : res.data.sections,
                 
-                
             })
             }
         )
+    }
+    makeProgress(){
+        axios.post("http://localhost:5000/user/makeProgress", {
+            email : user?.result.email ,
+            idCourse : this.props.match.params.idCourse,
+            indice: this.state.index
+        }).then(res=>console.log(res.data))
+
     }
     render() { 
         return ( 
@@ -55,27 +73,30 @@ class SectionDetails extends Component {
                         if (i==this.state.index)
                         {
                                     
-                        return<div><div className="breadcrumbs">
-                            <div className="container">
-                                <h2>
-                                    <a href={"/CourseDetails/" +this.props.match.params.idCourse} className="Linky">
-                                       {this.state.title}
-                                    </a>
-                                </h2>
-                                <p>Section {this.state.index+1} : {e.title} </p>
+                        return (
+                            <div>
+                                <div className="breadcrumbs">
+                                    <div className="container">
+                                        <h2>
+                                            <a href={"/CourseDetails/" +this.props.match.params.idCourse} className="Linky">
+                                            {this.state.title}
+                                            </a>
+                                        </h2>
+                                        <p>Section {this.state.index+1} : {e.title} </p>
+                                    </div>
+                                </div>
+                                <div className="container-sm mt-4 mb-4 section-details">
+                                    <Markdown>{e.content}</Markdown>  <br></br>
+                                </div>
                             </div>
-                        </div>
-                            <div className="container-sm mt-4 mb-4 section-details">
-                                <Markdown>{e.content}</Markdown>  <br></br>
-                            </div>
-                            </div>
-                        }
+                        )}
                     }
                 )}
                 <div class="row container-sm mb-4">
                    
                     {this.previousButtons()}
                     {this.nextButton()}
+                    {this.finishButton()}
 
                 </div>
             </div>
