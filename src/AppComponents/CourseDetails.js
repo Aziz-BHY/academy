@@ -32,7 +32,7 @@ class CourseDetails extends Component {
             enrolled :"",
             currentDate: date,
             reviewContent:"",
-            disabled : false,
+            progress : -1,
             comments : [],
         }
         //this.setImage =this.setImage.bind(this)
@@ -41,6 +41,7 @@ class CourseDetails extends Component {
         this.displayCommentsArea = this.displayCommentsArea.bind(this)
         this.submitReview = this.submitReview.bind(this)
         this.getComments = this.getComments.bind(this)
+        this.returnProgress = this.returnProgress.bind(this)
     }
     componentDidMount(){
             
@@ -59,10 +60,9 @@ class CourseDetails extends Component {
             id : this.props.match.params.idCourse,
             email :user?.result.email
         }).then(res =>{
-            if (res.data =="yes") this.setState({enrolled : "yes", disabled:false})
-            if (res.data == "no") this.setState({enrolled : "no"})
+            if (res.data.enrolled =="yes") this.setState({enrolled : "yes", progress:res.data.progress})
+            if (res.data.enrolled == "no") this.setState({enrolled : "no"})
         })
-        
     }
     returnEnrollButton(){
         //console.log(this.state.enrolled)
@@ -134,6 +134,17 @@ class CourseDetails extends Component {
                 this.getComments()
             }
         })  
+    }
+    returnProgress(i){
+        var result = 4
+        console.log("prog -->" +this.state.progress)
+        for (let index = 0; index <= this.state.progress; index++) {
+            if (index ==i) {
+                result = 100;
+                break;
+            }
+        }
+        return result;
     }
     /*setImage(img){
         const empty_img ="https://fr.metrotime.be/wp-content/uploads/2020/09/placeholder-image.png";
@@ -219,18 +230,26 @@ class CourseDetails extends Component {
                                             {e}
                                         </span>
                                     </div>
-                                    <div className="col-xl-4 align-items-stretch">
-                                        <div className="mt-3">
-                                        <Progress value={50} ></Progress>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-4 d-flex align-items-stretch">
-                                    <a href={"/SectionDetails/"+this.state.course._id+"/"+index} className="Linky">
-                                        <button className="btn-get-started mt-1" disabled={this.state.disabled}>
-                                             View details
-                                        </button>
-                                    </a> 
-                                    </div>
+                                    {
+                                        (this.state.enrolled == "yes")?
+                                        <>
+                                            <div className="col-xl-4 align-items-stretch">
+                                                <div className="mt-3">
+                                                <Progress value={this.returnProgress(index) } ></Progress>
+                                                </div>
+                                            </div>
+                                            <div className="col-xl-4 d-flex align-items-stretch">
+                                            <a href={"/SectionDetails/"+this.state.course._id+"/"+index} className="Linky">
+                                                <button className="btn-get-started mt-1" >
+                                                    View details
+                                                </button>
+                                            </a> 
+                                            </div>
+                                        </>
+                                        : <p></p>
+                                    
+                                    }
+                                    
                                 </div>
                                 )
                                 }

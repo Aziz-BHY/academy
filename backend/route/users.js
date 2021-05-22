@@ -134,9 +134,9 @@ router.route('/verifyEnrolled').post((req,res)=>{
     var founded = user.enrolled.filter(elem=>{
       return(elem.id == id)
     })
-    console.log(founded)
-    if(founded.length ==0) result="no"
-    if(founded.length ==1) result="yes"
+    //console.log("progress = "+ founded[0].progress)
+    if(founded.length ==0) result={enrolled:"no", progress:-1}
+    if(founded.length ==1) result={enrolled:"yes", progress:founded[0].progress}
     console.log(result)
     res.json(result)
     

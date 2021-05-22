@@ -39,7 +39,7 @@ class SectionDetails extends Component {
         if (this.state.index == this.state.section.length-1)
             return  <div className="text-right col" onClick={this.makeProgress.bind(this)}>
                         <button className="PrimaryButton">
-                            <a /*href={/*"/CourseDetails/" +this.props.match.params.idCourse*/  className="Linky">
+                            <a href={"/CourseDetails/" +this.props.match.params.idCourse}  className="Linky">
                                 Finish <i class="fas fa-caret-right"/>
                             </a > 
                         </button>

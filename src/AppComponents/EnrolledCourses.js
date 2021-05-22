@@ -57,7 +57,7 @@ class EnrolledCourses extends Component {
                                             </div>
                                             <h3><Link to={"/CourseDetails/" +e._id}> {e.title} </Link></h3>
                                             <div className="trainer  justify-content-between align-items-center">
-                                                <Progress value={this.state.Progress} />
+                                                <Progress value={((this.state.Progress+1)/e.sections.length)*100} />
                                             </div>
                                         </div>
                                     </div>
