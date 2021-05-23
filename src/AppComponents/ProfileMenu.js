@@ -86,10 +86,22 @@ export default function ProfileMenu(props) {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList  id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                  <MenuItem ><a className="MenuLink" href={'/Yourprofile/'+user?.result.email}>My Profile</a> </MenuItem>
-                  <MenuItem ><a className="MenuLink" href='/settings'>Settings</a> </MenuItem>
-                  <MenuItem ><a className="MenuLink" href='/NewCourse'>New Course</a> </MenuItem>
-                  <MenuItem className={classes.logout} onClick={props.logout}  >Logout</MenuItem>
+                  <a className="MenuLink" href={'/Yourprofile/'+user?.result.email}>
+                    <MenuItem>
+                      <span className="MenuLink">My Profile</span> 
+                    </MenuItem>
+                  </a>
+                  <a className="MenuLink" href='/settings'>
+                    <MenuItem>
+                      <span className="MenuLink">Settings</span> 
+                    </MenuItem>
+                  </a> 
+                  <a className="MenuLink" href='/NewCourse'>
+                    <MenuItem >
+                      <span className="MenuLink">New Course</span> 
+                    </MenuItem>
+                  </a>
+                  <MenuItem className={classes.logout} onClick={props.logout}><span className="Poppins" >Logout</span> </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

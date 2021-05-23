@@ -13,15 +13,22 @@
   text-decoration: none;
   color: inherit;
 }
-
+.Poppins {
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+}
 .MenuLink {
   font-family: "Poppins", sans-serif;
   font-size: 15px;
   font-weight: 500;
   color: #37423b;
+  white-space: nowrap;
+  transition: 0.3s;
+  align-items: center;
 }
 .MenuLink :hover {
-  color: #992a54;
+  color: #1692bf;
 }
 .search {
   width: 100%;
