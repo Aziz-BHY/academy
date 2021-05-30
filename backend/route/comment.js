@@ -1,5 +1,6 @@
 const router = require ("express").Router();
 let Comment = require('../models/comment.model')
+let Course = require('../models/course.model')
 
 router.route('/add').post((req, res)=>{
     Comment.findOne({idCourse : req.body.id,EmailUser : req.body.email}).then(com=>{
@@ -12,10 +13,17 @@ router.route('/add').post((req, res)=>{
             date : req.body.date
         }
         com.comment.push(NewComment)
-        com.save()
+        com.save();
+
+        Course.findById(req.body.id).then(course=>{
+            course.stars = course.stars+req.body.stars;
+            course.save();
+        })
+        
         res.json('yes')
 
     })
+    
 })
 router.route('/get').post((req, res)=>{
     var NbComments = 0;

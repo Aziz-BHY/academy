@@ -15,6 +15,7 @@ const courseSchema = new schema ({
     image : {type : String},
     status : {type : String},
     student :{type : Number},
+    stars :{type: Number},
 
 
 },
