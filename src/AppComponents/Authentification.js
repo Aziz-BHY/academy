@@ -48,15 +48,20 @@ const Authentification =()=> {
                                         
                                         <a className="github"><i className="fab fa-github icon-mr"></i> <span>Sign up with GitHub</span> </a>
 
-                                        <a className="google"><i className="fab fa-google icon-mr"></i> <span>Sign up with Google</span> </a>
                                         <div className="mt-4">
                                             <GoogleLogin
-                                            clientId="532469346612-2klpg2n8isd862rln18qjsnmbt6qh2iv.apps.googleusercontent.com"
-                                            buttonText="Sign up with google"
-                                            onSuccess={googleSuccess}
-                                            onFailure={googleError}
-                                            cookiePolicy={'single_host_origin'}
-                                            
+                                                className="google"
+                                                clientId="532469346612-2klpg2n8isd862rln18qjsnmbt6qh2iv.apps.googleusercontent.com"
+                                                buttonText="Sign up with google"
+                                                onSuccess={googleSuccess}
+                                                onFailure={googleError}
+                                                cookiePolicy={'single_host_origin'}
+                                                render={renderProps => (
+                                                    <a className="google" onClick={renderProps.onClick}>
+                                                    <i className="fab fa-google icon-mr"></i> <span>Sign up with Google</span> 
+                                                
+                                                    </a>
+                                                )}
                                             />
                                         </div>
                                     </div>
