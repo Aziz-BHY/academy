@@ -42,6 +42,7 @@ class CourseDetails extends Component {
         this.submitReview = this.submitReview.bind(this)
         this.getComments = this.getComments.bind(this)
         this.returnProgress = this.returnProgress.bind(this)
+        this.EmailToName = this.EmailToName.bind(this)
     }
     componentDidMount(){
             
@@ -110,13 +111,15 @@ class CourseDetails extends Component {
         })   
          
     }
-    getComments(){
+    async getComments (){
         
-        axios.post("http://localhost:5000/comment/get", {
+        await axios.post("http://localhost:5000/comment/get", {
             id : this.state.course._id,
 
         }).then(res=>{
+            console.log(res.data)
             this.setState({ comments:res.data  });
+            
             console.log(this.state.comments)
         })  
     }
@@ -155,6 +158,14 @@ class CourseDetails extends Component {
         else return img
         
     }*/
+    EmailToName=async (email )=>{
+        
+        var name = axios.post(("http://localhost:5000/user/getUserName"),{
+            email : email
+        })
+        return(name);
+        
+    }
     render() { 
         return ( 
             <div>
@@ -256,33 +267,47 @@ class CourseDetails extends Component {
                                 
                             </div>
 
+                            
+                            <h3>Name ={console.log(this.EmailToName('ounihadhami@gmail.com').then((a) => {
+                                                        console.log(a.data);
+                                                        
+                                                    }))
+                            /*console.log(this.EmailToName('ounihadhami@gmail.com').then((a) => {
+                                                        console.log(a.data);
+                                                    }))*/} </h3>
+
                             <h3>Reviews</h3>
                             <div className="single-section">
-                                {   
+                                {(this.state.comments.length==0) ? <p></p> :
+                                (   
                                     this.state.comments.map((c,i)=>   <div>
-                                            <span className="user-name margin-lt">
-                                                {c.EmailUser}
-                                            </span>
-                                            <span className="margin-lt">
-                                                <SimpleRating value={c.stars}  />
-                                            </span>
-                                            
-                                            <p className="comment">
-                                                {c.comment.map((e,i)=>
-                                                    <span>
-                                                    <h5>{e.content}</h5> 
-                                                    <p>{e.date}</p>
-                                                    </span>
-                                                )}
+                                           
+                                            {(c.comment.length ==0)? <p></p> :(
+                                            <div>
+                                                <span className="user-name margin-lt">
+                                                    {c.EmailUser}
+                                                </span>
+                                                <span className="margin-lt">
+                                                    <SimpleRating value={c.stars}  />
+                                                </span>
                                                 
-                                            </p>
-                                            <hr/>
-                                            
+                                                <p className="comment">
+                                                    {c.comment.map((e,i)=>
+                                                        <span>
+                                                        <h5>{e.content}</h5> 
+                                                        <p>{e.date}</p>
+                                                        </span>
+                                                    )}
+                                                    
+                                                </p>
+                                                <hr/>
+                                            </div>
+                                            )}
                                         </div>
                                     )
                                     
                                 
-                                }
+                                )}
                                 
                             </div>
 
