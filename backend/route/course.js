@@ -139,7 +139,7 @@ router.route('/searchCourse').get((req, res) =>{
             foundCourses=foundCourses.filter((course) => (course.title.includes(req.query.searchTerm)) 
             || (course.description.includes(req.query.searchTerm))
             || (course.tags.includes(req.query.searchTerm))
-            || (course.teacher.includes(req.query.searchTerm)) ) 
+            /*|| (course.teacher.includes(req.query.searchTerm))*/ ) 
           }
           res.json(foundCourses)
         })

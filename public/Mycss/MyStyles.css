@@ -399,3 +399,16 @@ pre {
 .margin-lt {
   margin-left: 20px;
 }
+
+.profile-image {
+  float: left;
+  width: calc(33.333% - 1rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 3rem;
+}
+
+.profile-image img {
+  border-radius: 50%;
+}

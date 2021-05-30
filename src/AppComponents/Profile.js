@@ -32,18 +32,28 @@ class Profile extends Component {
     render() { 
         return ( 
             <div>
-                <div className="breadcrumbs" data-aos="fade-in">
+                <div className="breadcrumbs">
                     <div className="container">
-                        <h2>Fill your profile</h2>
+                    
+                        <h2>{this.state.user?.name}</h2>
                     </div>
                 </div>
+
+
+			    <div class="profile-image">
+                        <img src={this.state.user?.image} className="img-fluid mt-3" alt=""/>
+
+                    </div>
+<h2>
+                        Works as <span className="inblue">{this.state.user?.post}</span>
+                        <br></br> 
+                        , At <span className="inblue">{this.state.user?.organisation} </span> 
+                    </h2>
+            
                 <div className="container-fluid mt-5" >
                     <Avatar className="" alt={this.state.user?.name} src={this.state.user?.image}></Avatar>
                     <h1>{this.state.user?.name}</h1>
-                    <h2>
-                        Works as <span className="inblue">{this.state.user?.post}</span> 
-                        , At <span className="inblue">{this.state.user?.organisation} </span> 
-                    </h2>
+                    
                     <h3>
                         <span className="" >Intrested by : </span>
                         <ul className="" >

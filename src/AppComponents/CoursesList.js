@@ -233,7 +233,7 @@ function CoursesList(props) {
                                             <div className="trainer-rank d-flex align-items-center">
                                                 <i className="bx bx-user inblue"></i>&nbsp;{elem.student}
                                                 &nbsp;&nbsp;
-                                                <i className="bx bx-star inblue"></i>&nbsp;65
+                                                <i className="bx bx-star inblue"></i>&nbsp;{(elem.stars!=null)?(elem.stars / elem.student):0}
                                             </div>
                                             </div>
                                         </div>
