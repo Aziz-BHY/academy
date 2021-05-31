@@ -1,6 +1,17 @@
 const router = require ("express").Router();
 let Comment = require('../models/comment.model')
 let Course = require('../models/course.model')
+let User = require('../models/user.model');
+
+const EmailToName= async ( email)=>{
+    var name=''
+    await User.findOne({email: email})
+        .then(elem =>{
+        //console.log('name :  '+elem.name)
+        name = elem.name
+    })
+    return name;
+} 
 
 router.route('/add').post((req, res)=>{
     Comment.findOne({idCourse : req.body.id,EmailUser : req.body.email}).then(com=>{
@@ -26,15 +37,16 @@ router.route('/add').post((req, res)=>{
     
 })
 router.route('/get').post((req, res)=>{
-    var NbComments = 0;
-    Comment.find({idCourse : req.body.id}).then(com=>{
-        //console.log(com)
-        // calucler nb de commentaires .. à revoir plus tard
-        com.forEach(element => {
-            if (element.comment.length != 0) 
-            NbComments=NbComments+element.comment.length
+    Comment.find({idCourse : req.body.id}).then(async com=>{
+        await com.forEach(async element => {
+             await EmailToName(element.EmailUser ).then(values => {
+                 element.name = values;
+                console.log('adding')
+            })
+            console.log('a single comment :')
+            console.log(element)
         });
-        console.log(NbComments)
+        console.log('sending')
         res.json(com)
 
     })

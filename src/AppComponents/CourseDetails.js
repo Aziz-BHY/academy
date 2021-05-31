@@ -43,6 +43,7 @@ class CourseDetails extends Component {
         this.getComments = this.getComments.bind(this)
         this.returnProgress = this.returnProgress.bind(this)
         this.EmailToName = this.EmailToName.bind(this)
+        this.REmail = this.REmail.bind(this)
     }
     componentDidMount(){
             
@@ -158,13 +159,20 @@ class CourseDetails extends Component {
         else return img
         
     }*/
-    EmailToName=async (email )=>{
+    EmailToName= async (email )=>{
         
-        var name = axios.post(("http://localhost:5000/user/getUserName"),{
+        return await axios.post(("http://localhost:5000/user/getUserName"),{
             email : email
+        }).then(mail=>{
+            return mail
         })
-        return(name);
         
+    }
+    REmail(email){
+        this.EmailToName(email).then((a) => {
+            console.log(a.data);
+            return(a.data)
+        })
     }
     render() { 
         return ( 
@@ -268,14 +276,7 @@ class CourseDetails extends Component {
                             </div>
 
                             
-                            <h3>Name ={console.log(this.EmailToName('ounihadhami@gmail.com').then((a) => {
-                                                        console.log(a.data);
-                                                        
-                                                    }))
-                            /*console.log(this.EmailToName('ounihadhami@gmail.com').then((a) => {
-                                                        console.log(a.data);
-                                                    }))*/} </h3>
-
+                            <h3>Name ={console.log(this.EmailToName("ounihadhami@gmail.com"))}</h3>
                             <h3>Reviews</h3>
                             <div className="single-section">
                                 {(this.state.comments.length==0) ? <p></p> :

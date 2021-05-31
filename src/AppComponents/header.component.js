@@ -32,8 +32,11 @@ const HeaderComponent =()=> {
     setUser(JSON.parse(localStorage.getItem('profile')));
   }, [location]);
 
-    
-
+    const isAdmin=()=>{
+        const email = user?.result.email
+        if (email == 'ounihadhami@gmail.com') return true
+        else return false
+    }
         return ( 
             <header id="header" className="fixed-top">
                 <div className="container d-flex align-items-center">
@@ -46,8 +49,8 @@ const HeaderComponent =()=> {
                         <ul>
                             <li><a href="/home">Home</a></li>
                             <li><a href="/coursesList" >Courses</a></li>
-                            <li><a href="/admin">Admin</a> </li>
                             
+                            {isAdmin() ? <li><a href="/admin">Admin</a> </li>  : <p></p> }
                             
                         </ul>
                         

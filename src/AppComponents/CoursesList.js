@@ -211,7 +211,7 @@ function CoursesList(props) {
                         
                             <div className="row" data-aos="zoom-in" data-aos-delay="100">
                             {courses.map((elem, index) =>    
-                                <div key={index} className="col-lg-5 col-md-6 d-flex align-items-stretch">
+                                <div key={index} className="col-lg-4 col-md-5 d-flex align-items-stretch">
                                 
                                     <div  className="course-item mb-3">
                                         <img src={elem.image} className="img-fluid img-course" alt="..."/>
