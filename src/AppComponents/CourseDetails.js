@@ -34,6 +34,7 @@ class CourseDetails extends Component {
             reviewContent:"",
             progress : -1,
             comments : [],
+            CanStars: false
         }
         //this.setImage =this.setImage.bind(this)
         this.enroll =this.enroll.bind(this)
@@ -79,12 +80,15 @@ class CourseDetails extends Component {
         if (this.state.enrolled =="yes")
         return (<div className="single-section">
                     <div className="margin-lt">
+                        {this.state.CanStars? 
                         <StyledRating
-                            value={this.state.setrate}
-                            onChange={(event, y) => {
-                                this.setState({setrate : y});
-                            }}
-                        />
+                        value={this.state.setrate}
+                        onChange={(event, y) => {
+                            this.setState({setrate : y});
+                        }}
+                    />
+                        : <div></div>}
+                        
                     </div>
                     <textarea 
                         type="text" 
@@ -112,16 +116,17 @@ class CourseDetails extends Component {
         })   
          
     }
-    async getComments (){
+     getComments (){
         
-        await axios.post("http://localhost:5000/comment/get", {
+         axios.post("http://localhost:5000/comment/get", {
             id : this.state.course._id,
 
         }).then(res=>{
-            console.log(res.data)
             this.setState({ comments:res.data  });
-            
-            console.log(this.state.comments)
+            let stars = this.state.CanStars;
+            /*for(let comment of res.data){
+                starts = starts || comment.
+            }*/
         })  
     }
     submitReview(){

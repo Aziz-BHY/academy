@@ -59,7 +59,7 @@ const HeaderComponent =()=> {
                     </nav>
                         <Toolbar className={classes.toolbar}>
                             {user?.result ? (
-                            <div >
+                            <div>
                                 <ProfileMenu user={user} logout={logout} />
                             </div>
                             ) : (

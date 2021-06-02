@@ -126,7 +126,7 @@ router.route('/searchCourse').get((req, res) =>{
   }
    
     Course.find({status:"active"})
-          .then (foundCourses => {
+          .then (async foundCourses => {
             foundCourses=foundCourses.filter((course)=>{
               return( ((course.price*1)>=price[0]*1) && ((course.price*1)<=(price[1]*1)) );
 
@@ -141,6 +141,12 @@ router.route('/searchCourse').get((req, res) =>{
             || (course.tags.includes(req.query.searchTerm))
             /*|| (course.teacher.includes(req.query.searchTerm))*/ ) 
           }
+          for(let cour of foundCourses){
+            await User.findOne({email: cour.teacher.email}).then(user=>{
+              cour.teacher.name = user.name
+            })
+          }
+          console.log(foundCourses)
           res.json(foundCourses)
         })
 })
@@ -150,16 +156,17 @@ router.route('/CourseDetail').get((req, res) =>
     var fs = require('fs');
     Course.findById(req.query.id ).then(
     elem => {
-      try {
-        res.json(
-          {course : elem}
-        );
-      } 
-      catch (err) {
-        console.error(err)
-      }
+        User.findOne({email:elem.teacher.email}).then(user=>{
+          elem.teacher.name = user.name
+          res.json(
+            {course : elem}
+          );
+        } )     
+        
+    
     }
-  )}
+  ).catch(err=>console.log(err))
+}
 )
 
 router.route('/SectionDetails').get((req, res) =>

@@ -36,19 +36,31 @@ router.route('/add').post((req, res)=>{
     })
     
 })
-router.route('/get').post((req, res)=>{
-    Comment.find({idCourse : req.body.id}).then(async com=>{
-        await com.forEach(async element => {
-             await EmailToName(element.EmailUser ).then(values => {
+router.route('/get').post(async (req, res)=>{
+    let comme =[];
+    await Comment.find({idCourse : req.body.id}).then( async com=>{
+        for(let commentaire of com){
+            await User.findOne({email: commentaire.EmailUser})
+            .then(elem =>{
+            console.log('name :  '+elem.name)
+            commentaire.EmailUser = elem.name
+            console.log(commentaire)
+            comme.push(commentaire)
+        })
+        
+        }
+        console.log('sending')
+        console.log(comme)
+        res.json(comme)
+          /*com.forEach( element => {
+              EmailToName(element.EmailUser ).then(values => {
                  element.name = values;
                 console.log('adding')
+                console.log('a single comment :')
             })
-            console.log('a single comment :')
-            console.log(element)
-        });
-        console.log('sending')
-        res.json(com)
-
+        });*/
+        
     })
+   
 })
 module.exports = router;
