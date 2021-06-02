@@ -6,8 +6,11 @@ import * as actionType from '../constants/actionTypes';
 import useStyles from './SpecialCss/header_styles';
 import decode from 'jwt-decode';
 import ProfileMenu from './ProfileMenu';
+import axios from 'axios';
+
 const HeaderComponent =()=> {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const [admin , setAdmin]= useState(false)
     const dispatch = useDispatch();
     const location = useLocation();
     const history = useHistory();
@@ -28,14 +31,23 @@ const HeaderComponent =()=> {
 
       if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
-
+    isAdmin();
     setUser(JSON.parse(localStorage.getItem('profile')));
   }, [location]);
 
     const isAdmin=()=>{
         const email = user?.result.email
-        if (email == 'ounihadhami@gmail.com') return true
-        else return false
+        /*if (email == 'ounihadhami@gmail.com') return true
+        else return false*/
+
+        axios.post("http://localhost:5000/admin/isAdmin", 
+            {email : email})
+            .then(res => {
+                console.log('admin is --> '+ res.data)
+                setAdmin(res.data)
+            }
+        )
+        
     }
         return ( 
             <header id="header" className="fixed-top">
@@ -50,7 +62,7 @@ const HeaderComponent =()=> {
                             <li><a href="/home">Home</a></li>
                             <li><a href="/coursesList" >Courses</a></li>
                             
-                            {isAdmin() ? <li><a href="/admin">Admin</a> </li>  : <p></p> }
+                            {admin ? <li><a href="/admin">Admin</a> </li>  : <p></p> }
                             
                         </ul>
                         
