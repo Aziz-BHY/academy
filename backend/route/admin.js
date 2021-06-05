@@ -18,13 +18,15 @@ router.route('/allCourses').post((req,res)=>{
   router.route('/isAdmin').post((req,res)=>{
     var email = req.body.email
     var result =false
-    const ADMINS=['ounihadhami@gmail.com', 'creometry@gmail.com']
   
-    console.log("le mail reçu --> "+ email);
+    //console.log("le mail reçu --> "+ email);
+    User.find({isAdmin : true, email: email}).then(admins=>{
+      //console.log(admins)
+      if(admins.length==1) result=true
+      console.log('admin is -->'+result)
+      res.json(result)
+    })
     
-    if (ADMINS.includes(email)) result=true
-    console.log('admin is -->'+result)
-    res.json(result)
   })
   
   module.exports = router;

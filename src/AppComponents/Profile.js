@@ -86,7 +86,7 @@ class Profile extends Component {
 
                 <div className="container-fluid courses col-lg-9 mt-5 mt-lg-0">
 
-                    <h2>Explore {this.state.user?.name}'s courses</h2>
+                    <h2>Explore <span className='inblue'> {this.state.user?.name}</span>'s courses</h2>
 
                     <div className="row mt-4 mb-4" data-aos-delay="100">
 

@@ -12,9 +12,7 @@ router.route('/').post((req, res)=>{
                     
                         email : req.body.email,
                         name : req.body.name,
-                        /*organisations : req.body.organisations,
-                        post : req.body.post,
-                        intrests : req.body.intrests,*/
+                        isAdmin : false,
                         
                       })
                       newUser.save().then(()=>res.json("yes"))
@@ -116,7 +114,6 @@ router.route('/makeProgress').post((req,res)=>{
 
   })
 })
-
 
 router.route('/getUserName').post((req,res)=>{
   User.findOne({email: req.body.email})

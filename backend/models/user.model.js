@@ -9,7 +9,8 @@ const courseSchema = new schema ({
     image : {type : String},
     post : {type : String},
     enrolled :{type : Array},
-    published :{type : Array}
+    published :{type : Array},
+    isAdmin :{type : Boolean},
 },
 {
     timesstamps : true 
