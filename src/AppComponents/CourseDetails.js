@@ -43,8 +43,7 @@ class CourseDetails extends Component {
         this.submitReview = this.submitReview.bind(this)
         this.getComments = this.getComments.bind(this)
         this.returnProgress = this.returnProgress.bind(this)
-        this.EmailToName = this.EmailToName.bind(this)
-        this.REmail = this.REmail.bind(this)
+        
     }
     componentDidMount(){
             
@@ -104,16 +103,22 @@ class CourseDetails extends Component {
         </div>)
     }
     enroll(){
-        console.log( "email :  "+user?.result.email  +" -- id:  "+this.props.match.params.idCourse)
-        axios.post("http://localhost:5000/user/addEnrolled", {
-            email :user?.result.email  ,
-            id:this.props.match.params.idCourse
-        }).then(res=>{
-            if (res.data == "yes") {
-                console.log("Enrolled with success ;)" )
-                window.location.reload()
-            }
-        })   
+        if (this.state.course.price == 0){
+            //console.log( "email :  "+user?.result.email  +" -- id:  "+this.props.match.params.idCourse)
+            axios.post("http://localhost:5000/user/addEnrolled", {
+                email :user?.result.email  ,
+                id:this.props.match.params.idCourse
+            }).then(res=>{
+                if (res.data == "yes") {
+                    console.log("Enrolled with success ;)" )
+                    window.location.reload()
+                }
+            })
+        }
+        else{
+            window.location.href='/home'
+        }
+           
          
     }
      getComments (){
@@ -155,30 +160,7 @@ class CourseDetails extends Component {
         }
         return result;
     }
-    /*setImage(img){
-        const empty_img ="https://fr.metrotime.be/wp-content/uploads/2020/09/placeholder-image.png";
-        console.log("image link :"+ img)
-        if (img ===""){
-            return empty_img
-        }
-        else return img
-        
-    }*/
-    EmailToName= async (email )=>{
-        
-        return await axios.post(("http://localhost:5000/user/getUserName"),{
-            email : email
-        }).then(mail=>{
-            return mail
-        })
-        
-    }
-    REmail(email){
-        this.EmailToName(email).then((a) => {
-            console.log(a.data);
-            return(a.data)
-        })
-    }
+    
     render() { 
         return ( 
             <div>
@@ -280,8 +262,6 @@ class CourseDetails extends Component {
                                 
                             </div>
 
-                            
-                            <h3>Name ={console.log(this.EmailToName("ounihadhami@gmail.com"))}</h3>
                             <h3>Reviews</h3>
                             <div className="single-section">
                                 {(this.state.comments.length==0) ? <p></p> :

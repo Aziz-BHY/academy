@@ -16,7 +16,7 @@ router.route('/add').post(async(req, res)=>{
     status : req.body.status,
     student :0,
     stars : 0,
-    path :'AcademyFiles/'+req.body.teacher.email+'/'+ req.body.title
+    path :'',
     
   })
     let idCourse =""
@@ -42,16 +42,12 @@ router.route('/addContent').post((req, res) =>{
 })
 
 router.route('/addSections').post( async (req, res) =>{
-  var ThePath = "";
-
+  
   var sections = req.body.sections ;
   var fs = require('file-system');
   var sectionTitle =[];
-  console.log("id : -->"+ req.body.id)
-  await Course.findById(req.body.id )
-        .then(elem =>{
-            ThePath = elem.path 
-        })
+
+  var ThePath = 'AcademyFiles/'+req.body.emailTeacher+'/'+ req.body.id ;
   console.log(ThePath)
   
   sections.map((e,index)=> {
@@ -65,6 +61,7 @@ router.route('/addSections').post( async (req, res) =>{
         .then(courses => 
           {
             courses.sections = sectionTitle
+            courses.path = ThePath
             courses.save()
           })
   res.json("content added")
@@ -141,19 +138,22 @@ router.route('/searchCourse').get((req, res) =>{
             || (course.tags.includes(req.query.searchTerm))
             /*|| (course.teacher.includes(req.query.searchTerm))*/ ) 
           }
+          var img =""
           for(let cour of foundCourses){
             await User.findOne({email: cour.teacher.email}).then(user=>{
-              cour.teacher.name = user.name
+              cour.teacher.name = user.name,
+              img = user.image
             })
           }
-          console.log(foundCourses)
-          res.json(foundCourses)
+          //console.log(foundCourses)
+          //console.log("im --> "+ img)
+          res.json({courses : foundCourses, teacherImage : img})
         })
 })
 
 router.route('/CourseDetail').get((req, res) =>
   {
-    var fs = require('fs');
+    
     Course.findById(req.query.id ).then(
     elem => {
         User.findOne({email:elem.teacher.email}).then(user=>{
@@ -202,7 +202,8 @@ router.route('/SectionDetails').get((req, res) =>
 router.route('/modifyContent').post(async(req,res)=>{
   const fs = require('fs')
   
-    var sections = req.body.course.sections ;
+  var sections = req.body.course.sections ;
+  var path = 'AcademyFiles/'+req.body.course.teacherEmail+'/'+ req.body.course._id;
 
   Course.findById(req.body.course._id).then(
     elem =>{
@@ -278,12 +279,13 @@ router.route('/deleteCourse').post((req, res) =>{
 
     Course.findByIdAndDelete(req.body.id).then((e)=>{
       const path = e.path
+      console.log(path)
       fs.rmdir(path, { recursive: true }, (err) => {
         if (err) {
             console.log(err)
         }
     
-       // console.log(`directory deleted!`);
+      console.log(`directory deleted!`);
     });
       res.json("course deleted")
     })

@@ -28,6 +28,9 @@ function EditCourse(props) {
         checked: {},
     })((props) => <Radio color="default" {...props} />);
     
+    const user = JSON.parse(localStorage.getItem('profile'))
+    const email = user?.result.email
+
     const [id, setID] = useState("")
     const [Title, setTitle] = useState("")
     const [Category, setCategory] = useState("")
@@ -105,8 +108,7 @@ function EditCourse(props) {
         const addNewSection =()=>{
             setSections(
                 [...sections, {title: "", 
-                content:`<h1> This is a new section </h1>
-                <p> Add the content ... </p>` }]
+                content:`<h1> This is a new section </h1> ` }]
             )
             setChange(true)
 
@@ -147,6 +149,14 @@ function EditCourse(props) {
         }
         
         const SaveEdits= ()=>{ 
+            var showdown  = require('showdown'),
+            converter = new showdown.Converter();
+
+            sections.map((e, index)=> {
+                e.content = converter.makeMarkdown(e.content)
+            })
+            console.log(sections)
+
             const CourseModified = {
                 _id : id,
                 title : Title ,
@@ -157,13 +167,17 @@ function EditCourse(props) {
                 tags : tags,
                 image : Image,
                 price : Price,
-                sections : sections
+                sections : sections,
+                teacherEmail : email,
             }
               
             axios.post("http://localhost:5000/course/modifyContent" ,{
                 course : CourseModified,
                 }).then(
-                res=> console.log(res.data)
+                res=>{
+                    console.log(res.data)
+                    console.log("well modified !")
+                } 
             )
         }
         return ( 
@@ -173,7 +187,7 @@ function EditCourse(props) {
                         <h2>Edit your course</h2>
                     </div>
                 </div>
-                <button className="PrimaryButton" onClick={getDetails} >Refresh</button>
+                
                 <form className="form-style container-md mb- mt-5">
                     <input type="text"  placeholder="Course Title" required="false" value={Title} onChange={(e)=>{setTitle(e.target.value)}}/>
                     <textarea placeholder="Course Description"value={Description} onChange={(e)=>{setDescription(e.target.value)}}></textarea>

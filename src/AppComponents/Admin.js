@@ -57,17 +57,17 @@ class Admin extends Component {
                         <h2> Admin Dashboard</h2>
                     </div>
                 </div>
+                <div className="container-sm mt-3">
                 <h3>
                     Pending courses
                 </h3>
-                <div className="container-fluid mt-3">
+                <div className="container-fluid mt-3 mb-4">
                     <table className="table table-striped">
                         <thead>
                             <tr>
                             <th scope="col">#</th>
                             <th scope="col">Title</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Students</th>
                             <th scope="col">View</th>
                             <th scope="col">Validate</th>
                             <th scope="col">Delete</th>
@@ -81,7 +81,6 @@ class Admin extends Component {
                                     <th scope="row">{i+1} </th>
                                     <td scope="col">{e.title} </td>
                                     <td scope="col">{e.status} </td>
-                                    <td scope="col">{e.student} </td>
                                     <td scope="col"><Link to={"/CourseDetails/"+e._id} ><i className="far fa-eye Link-inblue"/></Link> </td>
                                     <td scope="col">
                                         <i className="fas fa-check-circle Link-inblue"
@@ -109,6 +108,7 @@ class Admin extends Component {
                         </tbody>
                     </table>
                 </div>
+                
                 <h3>
                     Active courses
                 </h3>
@@ -155,6 +155,7 @@ class Admin extends Component {
                             
                         </tbody>
                     </table>
+                </div>
                 </div>
             </div>
         );

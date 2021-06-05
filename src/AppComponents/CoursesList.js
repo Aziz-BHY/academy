@@ -25,7 +25,7 @@ function CoursesList(props) {
         Advanced: false,
     });
     const [value, setValue] = useState([0, 100]); 
-
+    const [Teachimg, setTeachimg] =useState('')
     //  Styling des elements de material-ui
     
 
@@ -78,19 +78,13 @@ function CoursesList(props) {
 
         axios.get("http://localhost:5000/course/searchCourse?"+x+"&check="
         +JSON.stringify(CategoryCheck)+"&price="+JSON.stringify(value)+"&level="+JSON.stringify(LevelCheck) ).then(
-            res => setCourses(res.data)
+            res => {
+                setCourses(res.data.courses)
+                setTeachimg(res.data.teacherImage)
+            } 
         )
     }
-    /*useEffect(()=>{
-        let x = "";
-        if(searchTerm){
-            x="searchTerm="+searchTerm ;
-        }
-
-        axios.get("http://localhost:5000/course/courses?"+x+"&check="+JSON.stringify(CategoryCheck) ).then(
-            res => setCourses(res.data)
-        )
-    })*/
+    
     const handleChangeCategory = (event) => {
         console.log(event.target.name, event.target.checked)
 
@@ -118,16 +112,7 @@ function CoursesList(props) {
         setSearchTerm(event.currentTarget.value) ;
   
     }
-    /*const EmailToName= ( email)=>{
     
-        axios.post(("http://localhost:5000/user/getUserName"),{
-            email : email
-        }).then(res=>{
-            console.log('le nom convenable est --> '+res.data)
-            return(res.data)
-            
-        })
-    }*/
 
     const { web, cloud, programming } = CategoryCheck;
     const { Beginner, Intermediate, Advanced } = LevelCheck;
@@ -211,7 +196,7 @@ function CoursesList(props) {
                         
                             <div className="row" data-aos="zoom-in" data-aos-delay="100">
                             {courses.map((elem, index) =>    
-                                <div key={index} className="col-lg-4 col-md-5 d-flex align-items-stretch">
+                                <div key={index} className="col-lg-5 col-md-5 d-flex align-items-stretch">
                                 
                                     <div  className="course-item mb-3">
                                         <img src={elem.image} className="img-fluid img-course" alt="..."/>
@@ -227,7 +212,9 @@ function CoursesList(props) {
                                             <p>{elem.level} </p>
                                             <div className="trainer d-flex justify-content-between align-items-center">
                                             <div className="trainer-profile d-flex align-items-center">
-                                                <img src="assets/img/trainers/trainer-1.jpg" className="img-fluid" alt=""/>
+                                                <a href={'/Yourprofile/'+elem.teacher.email}>
+                                                    <img src={Teachimg} className="img-fluid" alt=""/>
+                                                </a>
                                                 <span> <a href={'/Yourprofile/'+elem.teacher.email}>{elem.teacher.name} </a></span>
                                             </div>
                                             <div className="trainer-rank d-flex align-items-center">

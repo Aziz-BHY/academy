@@ -3,6 +3,9 @@ import Section from './Section';
 import axios from 'axios';
 import SuccessMsg from './SuccessMsg';
 
+const user = JSON.parse(localStorage.getItem('profile'))
+const email = user?.result.email
+
 class AddSection extends Component {
     constructor(props){
         super(props)
@@ -61,7 +64,8 @@ class AddSection extends Component {
             
             axios.post("http://localhost:5000/course/addSections", {
                 sections: this.state.sections ,
-                id : this.state.id
+                id : this.state.id,
+                emailTeacher : email
                 
             }).then(res=>{
                 console.log("Course content well added !! for the course with id : "+this.state.id)

@@ -110,13 +110,15 @@ class Profile extends Component {
                                             <p>{elem.level} </p>
                                             <div className="trainer d-flex justify-content-between align-items-center">
                                             <div className="trainer-profile d-flex align-items-center">
-                                                <img src="assets/img/trainers/trainer-1.jpg" className="img-fluid" alt=""/>
-                                                <span>{elem.teacher.name} </span>
+                                                <a href={'/Yourprofile/'+elem.teacher.email}>
+                                                    <img src={this.state.user?.image} className="img-fluid" alt=""/>
+                                                </a>
+                                                <span> <a href={'/Yourprofile/'+elem.teacher.email}>{elem.teacher.name} </a></span>
                                             </div>
                                             <div className="trainer-rank d-flex align-items-center">
                                                 <i className="bx bx-user inblue"></i>&nbsp;{elem.student}
                                                 &nbsp;&nbsp;
-                                                <i className="bx bx-star inblue"></i>&nbsp;{(elem.stars!=null)?(elem.stars / elem.student):0}
+                                                <i className="bx bx-star inblue"></i>&nbsp;{(elem.stars!=0)?(elem.stars / elem.student):0}
                                             </div>
                                             </div>
                                         </div>

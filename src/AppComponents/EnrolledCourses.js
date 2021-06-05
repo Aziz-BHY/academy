@@ -47,6 +47,7 @@ class EnrolledCourses extends Component {
 
                         {
                             this.state.CoursesList.map((e,i)=>
+                            
                                 <div key={i} className="col-lg-5 col-md-6 d-flex align-items-stretch mb-2">
                                     <div className="course-item">
                                         <img src={e.image} className="img-fluid" alt="..."/>
@@ -56,8 +57,11 @@ class EnrolledCourses extends Component {
                                                 
                                             </div>
                                             <h3><Link to={"/CourseDetails/" +e._id}> {e.title} </Link></h3>
+                                            <span className="mt-2 mb-2" >{((this.state.Progress+1)/e.sections.length)*100}%</span>
                                             <div className="trainer  justify-content-between align-items-center">
+                                                
                                                 <Progress value={((this.state.Progress+1)/e.sections.length)*100} />
+                                                
                                             </div>
                                         </div>
                                     </div>
