@@ -3,9 +3,19 @@ let Course = require('../models/course.model')
 let User = require('../models/user.model');
 
 router.route('/allCourses').post((req,res)=>{
-    Course.find().then(course=>{
-      res.json(course)
-    })
+  if(req.body.user)
+  User.findOne({email: JSON.parse(req.body.user).result.email}).then(user=>{
+    if(user.isAdmin == true){
+      Course.find().then(course=>{
+        res.json(course)
+      })
+    }
+  else {
+    res.json({error: "not allowed"})
+  }
+  })
+  else res.json({error: "not allowed"})
+   
   })
   router.route('/validateCourse').post((req,res)=>{
     Course.findById(req.body.id).then(course=>{
