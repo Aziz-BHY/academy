@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import Authentification from './Authentification';
 import CoursesList from './CoursesList';
-import HeaderComponent from './Header.component';
+import HeaderComponent from './header.component';
 import HomeComponent from './Home.component';
 import CourseDetails from './CourseDetails.js';
 import FillProfile from './FillProfile';

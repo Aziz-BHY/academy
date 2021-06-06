@@ -9,17 +9,26 @@ class Admin extends Component {
             CoursesList : [],
             CoursePending: [],
             openDelete : false,
+            load: false
         }
         this.validateCourse=this.validateCourse.bind(this)
     }
     componentDidMount(){
         
-        axios.post("http://localhost:5000/admin/allCourses")
+        axios.post("http://localhost:5000/admin/allCourses", {
+            user: localStorage.getItem("profile")
+        })
             .then(res =>{ 
-                for(let course of res.data){
-                    if(course.status == "pending") this.setState({CoursePending: [...this.state.CoursePending, course]})
-                    if(course.status == "active") this.setState({CoursesList: [...this.state.CoursesList, course]})
-
+                if(res.data.error){
+                    window.location.href="/home"
+                }
+                else{
+                    this.setState({load: true})
+                    for(let course of res.data){
+                        if(course.status == "pending") this.setState({CoursePending: [...this.state.CoursePending, course]})
+                        if(course.status == "active") this.setState({CoursesList: [...this.state.CoursesList, course]})
+    
+                    }
                 }
             }
             
@@ -50,6 +59,7 @@ class Admin extends Component {
         this.setState({ openDelete : true });
     }
     render() { 
+        if(this.state.load)
         return ( 
             <div >
                 <div className="breadcrumbs" data-aos="fade-in">
@@ -159,6 +169,7 @@ class Admin extends Component {
                 </div>
             </div>
         );
+        else return(<p>Loading</p>)
     }
 }
  

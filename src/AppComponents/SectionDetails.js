@@ -11,7 +11,8 @@ class SectionDetails extends Component {
         this.state={
             section : [],
             index: this.props.match.params.index *1,
-            title:""
+            title:"",
+            load: false
         }
     }
     previousButtons(){
@@ -46,14 +47,18 @@ class SectionDetails extends Component {
                     </div> 
     }
     componentDidMount(){
-        axios.get("http://localhost:5000/course/SectionDetails?id="+this.props.match.params.idCourse ).then(
+        axios.get("http://localhost:5000/course/SectionDetails?id="+this.props.match.params.idCourse +"&user="+localStorage.getItem("profile")).then(
             res => {
-                console.log(res.data.sections)
-                this.setState({
-                title : res.data.title,
-                section : res.data.sections,
-                
-            })
+                if(res.data.error){
+                    console.log(res.data.error)
+                }else{
+                    this.setState({
+                        title : res.data.title,
+                        section : res.data.sections,
+                        load: true
+                    })
+                }
+               
             }
         )
     }
@@ -66,6 +71,7 @@ class SectionDetails extends Component {
 
     }
     render() { 
+        if(this.state.load)
         return ( 
             <div>
                 {this.state.section.map((e,i)=>
@@ -101,6 +107,7 @@ class SectionDetails extends Component {
                 </div>
             </div>
         );
+        return (<div>You don't have the right to access this course</div>)
     }
 }
  

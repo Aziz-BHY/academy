@@ -45,21 +45,25 @@ function EditCourse(props) {
     const [course, setCourse] = useState({sections:[]})
     const [change, setChange] = useState(false)
     const getDetails= () => {
-        axios.get("http://localhost:5000/course/CourseDetail?id="+props.match.params.idCourse ).then(
+        axios.get("http://localhost:5000/course/CourseDetail?id="+props.match.params.idCourse+"&user="+localStorage.getItem("profile")).then(
         res => {
-                  
-          setID(props.match.params.idCourse)
-          setTitle(res.data.course.title)
-          setCategory(res.data.course.category) 
-          setLanguage(res.data.course.language)
-          setLevelValue(res.data.course.level)
-          setDescription(res.data.course.description)
-          setTags(res.data.course.tags)
-          setPrice(res.data.course.price)
-          setImage(res.data.course.image)
-          setLevelValue(res.data.course.level)
-          setSectionTitle(res.data.sections)
+                if(res.data.error){
+                    window.location.href = "/home"
+                } else{
+                    setID(props.match.params.idCourse)
+                    setTitle(res.data.course.title)
+                    setCategory(res.data.course.category) 
+                    setLanguage(res.data.course.language)
+                    setLevelValue(res.data.course.level)
+                    setDescription(res.data.course.description)
+                    setTags(res.data.course.tags)
+                    setPrice(res.data.course.price)
+                    setImage(res.data.course.image)
+                    setLevelValue(res.data.course.level)
+                    setSectionTitle(res.data.sections)
         
+                }
+          
         })
         axios.get("http://localhost:5000/course/SectionDetails?id="+props.match.params.idCourse ).then(
             res => {
