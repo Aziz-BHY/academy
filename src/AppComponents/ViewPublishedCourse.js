@@ -53,14 +53,20 @@ class ViewPublishedCourse extends Component {
     }
     componentDidMount(){
             
-        axios.get("http://localhost:5000/course/CourseDetail?id="+this.props.match.params.idCourse ).then(
+        axios.get("http://localhost:5000/course/CourseDetail?id="+this.props.match.params.idCourse+"&user="+localStorage.getItem("profile") ).then(
             res => {
-                console.log(res.data.course)
-                this.setState({
-                course : res.data.course,
-                sectionsList : res.data.course.sections
-                })
-                this.getComments();
+                if(res.data.error){
+                    window.location.href = "/home";
+                }
+                else{
+                    console.log(res.data.course)
+                    this.setState({
+                    course : res.data.course,
+                    sectionsList : res.data.course.sections
+                    })
+                    this.getComments();
+                }
+              
             }
         )
          
