@@ -1,0 +1,21 @@
+.app {
+  margin: 1rem auto;
+  max-width: 70rem;
+}
+
+.app .ql-container {
+  min-height: 10em;
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  background: #ebfaff;
+}
+
+.app .ql-toolbar {
+  background: #7ec4dc;
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
+}
+
+.section-title-blue {
+  background-color: #ebfaff;
+}
