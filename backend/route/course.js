@@ -142,11 +142,11 @@ router.route('/searchCourse').get((req, res) =>{
           for(let cour of foundCourses){
             await User.findOne({email: cour.teacher.email}).then(user=>{
               cour.teacher.name = user.name,
-              img = user.image
+              cour.teacher.img = user.image
             })
           }
           //console.log(foundCourses)
-          //console.log("im --> "+ img)
+          
           res.json({courses : foundCourses, teacherImage : img})
         })
 })
@@ -168,15 +168,10 @@ router.route('/CourseDetail').get((req, res) =>
       }else {
         res.json({error: "Don't have access"})
       }
-        
-        
-    
     }
   ).catch(err=>console.log(err))
 }
-}
-    
-)
+})
 
 router.route('/SectionDetails').get((req, res) =>
   {

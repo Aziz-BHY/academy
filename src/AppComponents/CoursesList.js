@@ -213,7 +213,7 @@ function CoursesList(props) {
                                             <div className="trainer d-flex justify-content-between align-items-center">
                                             <div className="trainer-profile d-flex align-items-center">
                                                 <a href={'/Yourprofile/'+elem.teacher.email}>
-                                                    <img src={Teachimg} className="img-fluid" alt=""/>
+                                                    <img src={elem.teacher.img} className="img-fluid" alt=""/>
                                                 </a>
                                                 <span> <a href={'/Yourprofile/'+elem.teacher.email}>{elem.teacher.name} </a></span>
                                             </div>

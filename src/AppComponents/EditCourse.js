@@ -9,6 +9,7 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import Section from './Section';
 import axios from 'axios';
 import Markdown from 'markdown-to-jsx';
+import SuccessMsg from './SuccessMsg';
 
 const KeyCodes = {
 	comma: 188,
@@ -31,6 +32,7 @@ function EditCourse(props) {
     const user = JSON.parse(localStorage.getItem('profile'))
     const email = user?.result.email
 
+    const [success, setSuccess]=useState(false)
     const [id, setID] = useState("")
     const [Title, setTitle] = useState("")
     const [Category, setCategory] = useState("")
@@ -180,7 +182,8 @@ function EditCourse(props) {
                 }).then(
                 res=>{
                     console.log(res.data)
-                    console.log("well modified !")
+                    setSuccess(true)
+                    //console.log("well modified !")
                 } 
             )
         }
@@ -240,6 +243,14 @@ function EditCourse(props) {
                  
                 <button className="PrimaryButton mt-3 mb-4" onClick={SaveEdits} >Submit</button>
                 <br/>
+            </div>
+
+            <div className="mt-5" >
+                <SuccessMsg 
+                    success={this.state.success} 
+                    msg="Profile updated successfully ! " 
+                    handleClose={this.handleClose.bind(this)} 
+                />
             </div>
 
             </div>
