@@ -154,8 +154,8 @@ function NewCourse(props) {
                     required
                     delimiters={delimiters} />
 
-                <input type="number" placeholder="Course Price in TND" onChange={e => setPrice(e.target.value)} required />
-
+                <input type="number" placeholder="Course Price in TND" onChange={e => {if(e.target.value<101) setPrice(e.target.value)}} required />
+                
                 <input type="text" placeholder="Image banner Link"
                     value={image}
                     onChange={e => setImage(e.target.value)} required />

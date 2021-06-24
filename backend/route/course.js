@@ -267,6 +267,7 @@ router.route('/modifyContent').post(async (req, res) => {
 })
 
 router.route('/deleteCourse').post((req, res) => {
+  
   const fs = require('fs')
   User.findOne({ email: req.body.email }).then((user) => {
     user.published = user.published.filter(f => {
@@ -285,9 +286,9 @@ router.route('/deleteCourse').post((req, res) => {
     });
 
   })
-
+  
   Course.findByIdAndDelete(req.body.id).then((e) => {
-    const path = e.path
+    var path = e.path
     console.log(path)
     fs.rmdir(path, { recursive: true }, (err) => {
       if (err) {
@@ -298,7 +299,6 @@ router.route('/deleteCourse').post((req, res) => {
     });
     res.json("course deleted")
   })
-
 })
 
 

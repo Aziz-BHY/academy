@@ -11,18 +11,17 @@ class PublishedCourses extends Component {
             CoursesList: [],
             email: user?.result.email,
             openDelete: false,
+            idDelete : ''
         }
     }
     componentDidMount() {
-
         axios.post("http://localhost:5000/course/publishedCourses",
             { email: this.state.email })
             .then(res => {
                 this.setState({ CoursesList: res.data })
                 //console.log(this.state.CoursesList)
             }
-
-            )
+        )
     }
     refresh() {
         axios.post("http://localhost:5000/course/publishedCourses",
@@ -32,7 +31,6 @@ class PublishedCourses extends Component {
         //console.log(this.state.CoursesList)
     }
     deleteCourse(id) {
-
         axios.post("http://localhost:5000/course/deleteCourse", {
             id: id,
             email: this.state.email
@@ -44,8 +42,8 @@ class PublishedCourses extends Component {
     closeDialog() {
         this.setState({ openDelete: false });
     }
-    openDialog() {
-        this.setState({ openDelete: true });
+    openDialog(id) {
+        this.setState({ openDelete: true, idDelete : id });
     }
     render() {
         return (<div>
@@ -59,13 +57,12 @@ class PublishedCourses extends Component {
                         <th scope="col">Students</th>
                         <th scope="col">View</th>
                         <th scope="col">Edit</th>
-                        <th scope="col" onClick={this.openDialog.bind(this)} >Delete</th>
+                        <th scope="col">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
                         this.state.CoursesList.map((e, i) =>
-
                             <tr key={i} >
                                 <th scope="row">{i + 1} </th>
                                 <td scope="col">{e.title} </td>
@@ -75,26 +72,20 @@ class PublishedCourses extends Component {
                                 <td scope="col"><Link to={"/EditPublishedCourse/" + e._id} ><i className="far fa-edit Link-inblue" /></Link> </td>
                                 <td scope="col">
                                     <i className="far fa-trash-alt Link-inblue"
-                                        onClick={this.openDialog.bind(this)}
-                                    //onClick={()=>this.deleteCourse(e?._id)}
-                                    />
-                                    <DeleteDialog
-                                        open={this.state.openDelete}
-                                        handleClose={this.closeDialog.bind(this)}
-                                        handleAgree={() => this.deleteCourse(e._id)}
+                                        onClick={() => this.openDialog(e._id)}
                                     />
                                 </td>
                             </tr>
-
-
                         )
                     }
-
-
                 </tbody>
             </table>
 
-
+            <DeleteDialog
+                        open={this.state.openDelete}
+                        handleClose={this.closeDialog.bind(this)}
+                        handleAgree={() => this.deleteCourse(this.state.idDelete)}
+                    />
         </div>);
     }
 }
