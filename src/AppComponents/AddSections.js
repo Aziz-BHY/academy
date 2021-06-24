@@ -10,7 +10,9 @@ class AddSection extends Component {
     constructor(props){
         super(props)
         this.state={
-            sections:[],
+            sections:[{title: "", 
+            content:`<h1> This is the first section </h1>
+            <p> Add the content ... </p>` }],
             id : this.props.id ,
             success : false,
 

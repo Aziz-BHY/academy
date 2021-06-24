@@ -81,41 +81,50 @@ function NewCourse(props) {
         checked: {},
     })((props) => <Radio color="default" {...props} />);
 
+    const informationsArefilled =() =>{
+        if ((Title!="") && (Category!="") && (Language!="") && 
+        (LevelValue!="") && (Description!="") && (Teacher!=null) &&
+        (tags.length!=0) && (price != null) ) return true ;
+    }
+
     const handleClick = async (event) => {
-
         event.preventDefault();
-        const newCourse = {
-            title: Title,
-            category: Category,
-            language: Language,
-            level: LevelValue,
-            description: Description,
-            teacher: Teacher,
-            tags: tags,
-            price: price,
-            image: image,
-            status: "pending"
+
+        if (informationsArefilled) {
+            const newCourse = {
+                title: Title,
+                category: Category,
+                language: Language,
+                level: LevelValue,
+                description: Description,
+                teacher: Teacher,
+                tags: tags,
+                price: price,
+                image: image,
+                status: "pending"
+            }
+            console.log(newCourse)
+            await axios.post('http://localhost:5000/course/add', newCourse).then(res => {
+                if (res.data.added == "yes") {
+                    console.log("course created YESSS !!!!!! with id :" + res.data.id)
+                    setId(res.data.id)
+                    leID = res.data.id
+                    setWaiting(true)
+                }
+
+            })
+            await axios.post('http://localhost:5000/user/addPublished', {
+                id: leID,
+                email: Teacher.email
+            }).then(res => {
+                if (res.data == "yes") {
+                    console.log("Published with success ;)")
+
+                }
+
+            }) 
         }
-        console.log(newCourse)
-        await axios.post('http://localhost:5000/course/add', newCourse).then(res => {
-            if (res.data.added == "yes") {
-                console.log("course created YESSS !!!!!! with id :" + res.data.id)
-                setId(res.data.id)
-                leID = res.data.id
-                setWaiting(true)
-            }
-
-        })
-        await axios.post('http://localhost:5000/user/addPublished', {
-            id: leID,
-            email: Teacher.email
-        }).then(res => {
-            if (res.data == "yes") {
-                console.log("Published with success ;)")
-
-            }
-
-        })
+        
     }
     return (
         <div>

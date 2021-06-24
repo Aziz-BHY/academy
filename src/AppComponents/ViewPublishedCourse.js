@@ -104,10 +104,8 @@ class ViewPublishedCourse extends Component {
          
     }
     getComments(){
-        
         axios.post("http://localhost:5000/comment/get", {
             id : this.state.course._id,
-
         }).then(res=>{
             this.setState({ comments:res.data  });
             console.log(this.state.comments)
