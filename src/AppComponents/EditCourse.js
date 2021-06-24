@@ -47,7 +47,7 @@ function EditCourse(props) {
     const [course, setCourse] = useState({ sections: [] })
     const [change, setChange] = useState(false)
     const getDetails = () => {
-        axios.get("http://localhost:5000/course/CourseDetail?id=" + props.match.params.idCourse + "&user=" + localStorage.getItem("profile")).then(
+        axios.get("http://localhost:5000/course/CourseDetail?id=" + props.match.params.idCourse + "&user=" + email).then(
             res => {
                 if (res.data.error) {
                     window.location.href = "/home"
@@ -187,6 +187,7 @@ function EditCourse(props) {
             res => {
                 console.log(res.data)
                 setSuccess(true)
+                console.log(success)
                 //console.log("well modified !")
             }
         )
@@ -252,7 +253,7 @@ function EditCourse(props) {
             <div className="mt-5" >
                 <SuccessMsg
                     success={success}
-                    msg="Profile updated successfully ! "
+                    msg="Course updated successfully ! "
                     handleClose={handleClose}
                 />
             </div>

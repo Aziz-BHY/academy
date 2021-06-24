@@ -166,7 +166,7 @@ router.route('/CourseDetail').get((req, res) => {
 router.route('/SectionDetails').get((req, res) => {
   var fs = require('fs');
   var SectionDetail = []
-  User.findOne({ email: JSON.parse(req.query.user).result.email }).then(user => {
+  /*User.findOne({ email: req.query.user }).then(user => {
     let access = false;
     for (let enroll of user.enrolled) {
       if (enroll.id == req.query.id) {
@@ -177,7 +177,7 @@ router.route('/SectionDetails').get((req, res) => {
     if (!access) {
       res.json({ error: "Don't have access" });
       return;
-    }
+    }*/
 
     Course.findById(req.query.id).then(
       elem => {
@@ -190,6 +190,7 @@ router.route('/SectionDetails').get((req, res) => {
             var x = { title: e, content: data }
             SectionDetail.push(x)
           })
+          //console.log(SectionDetail)
           res.json(
             {
               sections: SectionDetail,
@@ -204,7 +205,7 @@ router.route('/SectionDetails').get((req, res) => {
       }
 
     )
-  })
+  //})
 }
 )
 

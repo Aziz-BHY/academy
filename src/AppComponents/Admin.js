@@ -33,9 +33,7 @@ class Admin extends Component {
 
                     }
                 }
-            }
-
-            )
+            })
     }
     deleteCourse(id, email) {
         console.log(id)
