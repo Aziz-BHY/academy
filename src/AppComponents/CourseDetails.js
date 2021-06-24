@@ -34,7 +34,8 @@ class CourseDetails extends Component {
             reviewContent: "",
             progress: -1,
             comments: [],
-            CanStars: true
+            CanStars: true,
+            token :""
         }
         //this.setImage =this.setImage.bind(this)
         this.enroll = this.enroll.bind(this)
@@ -55,6 +56,15 @@ class CourseDetails extends Component {
                     sectionsList: res.data.course.sections
                 })
                 this.getComments();
+                axios.post("https://sandbox.paymee.tn/api/v1/payments/create", 
+                    {
+                    "vendor": 1862,
+                    "amount": res.data.course.price,
+                    "note" : "You will pay :"
+                },  {headers: {Authorization: "Token 6959e271e6ace674ee06e8790ee8d059abb5076c"}
+                }).then(payres=>{
+                    this.setState({ token: payres.data.data.token  });
+                }).catch(err=>console.log(err))
             }
         )
 
@@ -69,9 +79,26 @@ class CourseDetails extends Component {
     returnEnrollButton() {
         //console.log(this.state.enrolled)
         if (this.state.enrolled == "no")
-            return (<div className="d-flex justify-content-between align-items-center">
-                <button className="btn-outlined" onClick={() => this.enroll()}>Enroll this course</button>
-            </div>)
+            if (this.state.course.price==0){
+                return(
+                    <div className="d-flex justify-content-between align-items-center">
+                        <button className="btn-outlined" onClick={() => this.enroll()}>Enroll this course</button>
+                    </div>
+                )
+            }
+            else{
+               return (
+                    <form method="post" action="https://sandbox.paymee.tn/gateway/">
+                        <input type="hidden" name="payment_token" value={this.state.token} />
+                        <input type="hidden" name="url_ok" value="http://localhost:3000/home" />
+                        <input type="hidden" name="url_ko" value="http://localhost:3000/home" />
+                        <div className="d-flex justify-content-between align-items-center">
+                            <button className="btn-outlined" onClick={() => this.enroll()}>Enroll this course</button>
+                        </div>
+                    </form>
+                ) 
+            }
+            
 
 
     }
