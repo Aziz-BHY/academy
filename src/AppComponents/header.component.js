@@ -64,10 +64,12 @@ const HeaderComponent = () => {
                     <ul>
                         <li><a href="/home">Home</a></li>
                         <li><a href="/coursesList" >Courses</a></li>
+                        <li><a href="/about" >About us</a></li>
 
                         {admin ? <li><a href="/admin">Admin</a> </li> : <p></p>}
 
                     </ul>
+
 
 
                     <i className="bi bi-list mobile-nav-toggle"></i>

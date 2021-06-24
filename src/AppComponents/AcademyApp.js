@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Authentification from './Authentification';
 import CoursesList from './CoursesList';
@@ -10,15 +10,16 @@ import FillProfile from './FillProfile';
 import Settings from './Settings';
 import FatherAddCourse from './FatherAddCourse';
 import SectionDetails from './SectionDetails';
-import ViewPublishedCourse from './ViewPublishedCourse' ;
+import ViewPublishedCourse from './ViewPublishedCourse';
 import EditCourse from './EditCourse';
 import Profile from './Profile';
 import Admin from './Admin';
+import About from './About';
 
 class AcademyApp extends Component {
-    
-    render() { 
-        return ( 
+
+    render() {
+        return (
             <div>
                 <Router>
                     <HeaderComponent />
@@ -30,10 +31,10 @@ class AcademyApp extends Component {
                     </Route>
                     <Route path="/authentification">
                         <Authentification />
-                        
+
                     </Route>
                     <Route path="/CourseDetails/:idCourse" component={CourseDetails}>
-                        
+
                     </Route>
 
                     <Route path="/fillProfile">
@@ -51,22 +52,26 @@ class AcademyApp extends Component {
 
                     <Route path="/ViewPublishedCourse/:idCourse" component={ViewPublishedCourse} >
                     </Route>
-                    
-                    <Route path ="/EditPublishedCourse/:idCourse" component={EditCourse} >
+
+                    <Route path="/EditPublishedCourse/:idCourse" component={EditCourse} >
                     </Route>
-                    
+
                     <Route path="/YourProfile/:UserEmail" component={Profile} />
-                       
+
                     <Route path="/Admin">
                         <Admin />
                     </Route>
+
+                    <Route path="/about">
+                        <About />
+                    </Route>
                 </Router>
-                
-                
+
+
             </div>
-            
-         );
+
+        );
     }
 }
- 
+
 export default AcademyApp;
