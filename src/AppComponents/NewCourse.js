@@ -35,6 +35,7 @@ function NewCourse(props) {
     const [price, setPrice] = useState();
     const [image, setImage] = useState("https://webcolours.ca/wp-content/uploads/2020/10/webcolours-unknown.png");
     const [waiting, setWaiting] = useState(false);
+    const [error, setError]=useState("");
 
     var leID = "ps";
     useEffect(() => {
@@ -81,16 +82,32 @@ function NewCourse(props) {
         checked: {},
     })((props) => <Radio color="default" {...props} />);
 
+    const priceControl =(price) =>{
+        if ((price == undefined) || (price <0) || (price >100)){
+            setError('Price should be between 0 and 100 TND')
+        }
+        else{
+            setPrice(price)
+            setError('')
+        }
+    }
+
     const informationsArefilled =() =>{
         if ((Title!="") && (Category!="") && (Language!="") && 
-        (LevelValue!="") && (Description!="") && (Teacher!=null) &&
-        (tags.length!=0) && (price != null) ) return true ;
+        (Description!="") && 
+        (tags.length!=0) && (price != undefined) ) {
+            console.log("filleed !!")
+            return true ;
+        }
+        else {
+            console.log("not filleeed !!")
+            return false ;
+        }
     }
 
     const handleClick = async (event) => {
-        event.preventDefault();
-
-        if (informationsArefilled) {
+        
+            console.log("filled")
             const newCourse = {
                 title: Title,
                 category: Category,
@@ -119,11 +136,10 @@ function NewCourse(props) {
             }).then(res => {
                 if (res.data == "yes") {
                     console.log("Published with success ;)")
-
                 }
-
             }) 
-        }
+        
+        
         
     }
     return (
@@ -161,9 +177,18 @@ function NewCourse(props) {
                     placeholder="Course key words ..."
                     autofocus={false}
                     required
-                    delimiters={delimiters} />
+                    delimiters={delimiters} 
+                />
 
-                <input type="number" placeholder="Course Price in TND" onChange={e => {if(e.target.value<101) setPrice(e.target.value)}} required />
+                <input 
+                    type="number" 
+                    placeholder="Course Price in TND" 
+                    value={price}
+                    onChange={e => {
+                        priceControl(e.target.value)
+                    }} 
+                    required 
+                />
                 
                 <input type="text" placeholder="Image banner Link"
                     value={image}
@@ -172,8 +197,12 @@ function NewCourse(props) {
                 <div className="text-center">
                     <button
                         onClick={async (e) => {
-                            await handleClick(e);
-                            props.changeFatherStates(false, leID)
+                            if (informationsArefilled==true){
+                                e.preventDefault();
+                                await handleClick(e);
+                                props.changeFatherStates(false, leID)
+                            }
+                            
                         }}
                         type="submit">
 
@@ -182,6 +211,7 @@ function NewCourse(props) {
                 </div>
 
             </form>
+            <h1>{error} </h1>
             <WaitingBar
                 msg="Please wait ..."
                 waiting={waiting}

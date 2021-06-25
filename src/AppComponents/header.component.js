@@ -58,7 +58,6 @@ const HeaderComponent = () => {
                     <img src={logo} className="logo-image" />
                 </a></h1>
 
-                <a href="index.html" className="logo me-auto"><img src="assets/img/logo.png" alt="" className="img-fluid" /></a>
 
                 <nav id="navbar" className="navbar order-last order-lg-0">
                     <ul>
@@ -69,11 +68,10 @@ const HeaderComponent = () => {
                         {admin ? <li><a href="/admin">Admin</a> </li> : <p></p>}
 
                     </ul>
-
-
-
+                    
                     <i className="bi bi-list mobile-nav-toggle"></i>
                 </nav>
+                
                 <Toolbar className={classes.toolbar}>
                     {user?.result ? (
                         <div>
