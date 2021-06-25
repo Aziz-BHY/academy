@@ -106,7 +106,7 @@ function NewCourse(props) {
     }
 
     const handleClick = async (event) => {
-        
+            event.preventDefault()
             console.log("filled")
             const newCourse = {
                 title: Title,
@@ -138,9 +138,6 @@ function NewCourse(props) {
                     console.log("Published with success ;)")
                 }
             }) 
-        
-        
-        
     }
     return (
         <div>
@@ -189,20 +186,21 @@ function NewCourse(props) {
                     }} 
                     required 
                 />
-                
+                <span className="mt-0 mb-2 erreur">
+                    <p>{error}</p>
+                </span>
+
                 <input type="text" placeholder="Image banner Link"
                     value={image}
-                    onChange={e => setImage(e.target.value)} required />
+                    onChange={e => setImage(e.target.value)} required 
+                />
 
                 <div className="text-center">
                     <button
                         onClick={async (e) => {
-                            if (informationsArefilled==true){
-                                e.preventDefault();
-                                await handleClick(e);
-                                props.changeFatherStates(false, leID)
-                            }
-                            
+                            await handleClick(e);
+                            props.changeFatherStates(false, leID)
+                        
                         }}
                         type="submit">
 
@@ -211,7 +209,7 @@ function NewCourse(props) {
                 </div>
 
             </form>
-            <h1>{error} </h1>
+            
             <WaitingBar
                 msg="Please wait ..."
                 waiting={waiting}
