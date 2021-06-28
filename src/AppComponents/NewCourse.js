@@ -93,6 +93,8 @@ function NewCourse(props) {
     }
 
     const informationsArefilled =() =>{
+        console.log("price")
+        console.log(price)
         if ((Title!="") && (Category!="") && (Language!="") && 
         (Description!="") && 
         (tags.length!=0) && (price != undefined) ) {
@@ -106,8 +108,6 @@ function NewCourse(props) {
     }
 
     const handleClick = async (event) => {
-            event.preventDefault()
-            console.log("filled")
             const newCourse = {
                 title: Title,
                 category: Category,
@@ -146,7 +146,7 @@ function NewCourse(props) {
                     <h2>Add a course</h2>
                 </div>
             </div>
-            <form className="form-style container-md mb-5">
+            <form className="form-style container-md mb-5" novalidate>
                 <h2 className="text-center mt-4 mb-4"> First, fill informations of your course</h2>
 
                 <input type="text" placeholder="Course Title" onChange={e => setTitle(e.target.value)} required />
@@ -198,8 +198,13 @@ function NewCourse(props) {
                 <div className="text-center">
                     <button
                         onClick={async (e) => {
-                            await handleClick(e);
-                            props.changeFatherStates(false, leID)
+                            
+                            if(informationsArefilled()){
+                                e.preventDefault()
+                                await handleClick(e);
+                                props.changeFatherStates(false, leID)
+                            }
+                            
                         
                         }}
                         type="submit">

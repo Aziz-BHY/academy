@@ -246,17 +246,16 @@ function EditCourse(props) {
                     </div>
                 )}
 
-                <button className="PrimaryButton mt-3 mb-4" onClick={SaveEdits} >Submit</button>
+                <button className="PrimaryButton mt-3 mb-2" onClick={SaveEdits} >Submit</button>
                 <br />
+                {
+                (success == true )?<h5 className="succes">
+                                Course updated successfully
+                            </h5>
+                            : <p></p>
+                        }
             </div>
 
-            <div className="mt-5" >
-                <SuccessMsg
-                    success={success}
-                    msg="Course updated successfully ! "
-                    handleClose={handleClose}
-                />
-            </div>
 
         </div>
     );

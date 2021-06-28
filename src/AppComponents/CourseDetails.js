@@ -130,8 +130,8 @@ class CourseDetails extends Component {
         </div>)
     }
     enroll() {
-        // if (this.state.course.price == 0){
-        //console.log( "email :  "+user?.result.email  +" -- id:  "+this.props.match.params.idCourse)
+        if (this.state.course.price == 0){
+        console.log( "email :  "+user?.result.email  +" -- id:  "+this.props.match.params.idCourse)
         axios.post("http://localhost:5000/user/addEnrolled", {
             email: user?.result.email,
             id: this.props.match.params.idCourse
@@ -141,10 +141,10 @@ class CourseDetails extends Component {
                 window.location.reload()
             }
         })
-        /* }
+        }
         else{
             window.location.href='/home'
-        }*/
+        }
 
 
     }
