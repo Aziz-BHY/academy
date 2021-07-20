@@ -412,3 +412,14 @@ pre {
 .profile-image img {
   border-radius: 50%;
 }
+
+.erreur {
+  color: #d82d66;
+  font-weight: 600;
+  font-size: 18px;
+}
+.succes {
+  color: #09d375;
+  font-weight: 600;
+  font-size: 18px;
+}

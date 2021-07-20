@@ -6,6 +6,7 @@ import axios from 'axios';
 import Rating from '@material-ui/lab/Rating';
 import { withStyles } from '@material-ui/core/styles';
 import './SpecialCss/style.css';
+import DeleteDialog from './DeleteDialog';
 
 const user = JSON.parse(localStorage.getItem('profile'));
 const StyledRating = withStyles({
@@ -38,6 +39,7 @@ class ViewPublishedCourse extends Component {
             reviewContent:"",
             progress : -1,
             comments : [],
+            openDelete : false
         }
         //this.setImage =this.setImage.bind(this)
         this.enroll =this.enroll.bind(this)
@@ -102,10 +104,8 @@ class ViewPublishedCourse extends Component {
          
     }
     getComments(){
-        
         axios.post("http://localhost:5000/comment/get", {
             id : this.state.course._id,
-
         }).then(res=>{
             this.setState({ comments:res.data  });
             console.log(this.state.comments)
@@ -137,6 +137,14 @@ class ViewPublishedCourse extends Component {
         }
         return result;
     }
+    closeDialog() {
+        this.setState({ openDelete: false });
+    }
+    openDialog(id, email) {
+        //console.log(id)
+        this.setState({ openDelete: true, id: id , email:email});
+
+    }
     render() { 
         return ( 
             <div>
@@ -145,11 +153,21 @@ class ViewPublishedCourse extends Component {
                         <h2>{this.state.course.title}</h2>
                     </div>
                 </div>
+
+                <DeleteDialog
+                    open={this.state.openDelete}
+                    handleClose={this.closeDialog.bind(this)}
+                    handleAgree={() => this.deleteCourse(this.state.course._id)}
+                />
+
                 <div className="container-sm mt-5" >
                     <button className="edit-button" >
                         <Link to={"/EditPublishedCourse/"+this.state.course._id} className="Linky"> <i className="far fa-edit"/> Edit this course </Link>
                     </button>
-                    <button className="delete-button" onClick={()=>this.deleteCourse(this.state.course._id)} >
+                    <button className="delete-button" 
+                        onClick={()=>{
+                            this.setState({ openDelete:true  });
+                        }}>
                         <i className="far fa-trash-alt"/> Delete this course
                     </button>
                 </div>

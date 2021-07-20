@@ -46,7 +46,12 @@ const Authentification =()=> {
                                     <h2 className="text-center mb-5" >Sign up</h2>
                                     <div className="social-media">
                                         
-                                        <a className="github"><i className="fab fa-github icon-mr"></i> <span>Sign up with GitHub</span> </a>
+                                        <a className="github" href="https://github.com/login/oauth/authorize?client_id=497019fe5be83e0be165">
+                                            <i className="fab fa-github icon-mr"></i> 
+                                            <span>
+                                                Sign up with GitHub
+                                            </span> 
+                                        </a>
 
                                         <div className="mt-4">
                                             <GoogleLogin
